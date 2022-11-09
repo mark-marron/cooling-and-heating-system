@@ -1,11 +1,12 @@
-from adminControlPanel import adminControl
-from zoneControlPanel import zoneControl
-from tempSensor import tempSensor
+from adminControlPanel import AdminControl
+from zoneControlPanel import ZoneControl
+from TempSensor import TempSensor
+
 
 running = True
-adminPanel = adminControl()
-z1 = zoneControl()
-z2 = zoneControl()
+adminPanel = AdminControl()
+z1 = ZoneControl()
+z2 = ZoneControl()
 zonePanels = []
 
 while running:
