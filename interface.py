@@ -2,13 +2,13 @@ import tkinter as tk
 from tkinter import *
 from adminControlPanel import adminControl
 from zoneControlPanel import zoneControl
-from tempSensor import tempSensor
+from TempSensor import TempSensor
 
 running = True
 adminPanel = adminControl()
 z1 = zoneControl()
 zonePanels = []
-temp = tempSensor
+temp = TempSensor
 currentTempint = z1.get_temp()
 currentTemp = str(currentTempint)
 heat_on = True
@@ -47,10 +47,14 @@ def getTempClicked():
 
 def toggleHeatClick():
     global heat_on
+    global cool_on
     if heat_on:
         result3 = "Heating : ON"
+        result4 = "Cooling  : OFF"
         heatingToggle.config(text=result3)
+        coolingToggle.config(text=result4)
         heat_on = False
+        cool_on = True
     else:
         result3 = "Heating : OFF"
         heatingToggle.config(text=result3)
@@ -58,10 +62,14 @@ def toggleHeatClick():
 
 def toggleCoolClick():
     global cool_on
+    global heat_on
     if cool_on:
         result4 = "Cooling : ON"
+        result3 = "Heating : OFF"
         coolingToggle.config(text=result4)
+        heatingToggle.config(text=result3)
         cool_on = False
+        heat_on = True
     else:
         result4 = "Cooling : OFF"
         coolingToggle.config(text=result4)
