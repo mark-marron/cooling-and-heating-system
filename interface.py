@@ -1,12 +1,12 @@
 import tkinter as tk
 from tkinter import *
-from adminControlPanel import adminControl
-from zoneControlPanel import zoneControl
+from adminControlPanel import AdminControl
+from zoneControlPanel import ZoneControl
 from TempSensor import TempSensor
 
 running = True
-adminPanel = adminControl()
-z1 = zoneControl()
+adminPanel = AdminControl()
+z1 = ZoneControl()
 zonePanels = []
 temp = TempSensor
 currentTempint = z1.get_temp()
@@ -34,9 +34,13 @@ label = tk.Label(text="Heating and Cooling System Controller", fg="black")
 def setTempClicked():
     try:
         t = int(setTempValueInt.get())
-        tempDiff = t - int(currentTemp)
-        result = "You have set the temperature to %i Degrees Celsius!\n There is a %i Degree difference from the current temperature" %(t, tempDiff)
-        selectedTemp.config(text=result)
+        if t < 0 or t > 30:
+            result = "The temperature you have submitted (%i) is outside the recommended range! Please select a temperature between 0-30 degrees celsius" %(t)
+            selectedTemp.config(text=result)
+        else:
+            tempDiff = t - int(currentTemp)
+            result = "You have set the temperature to %i Degrees Celsius!\n There is a %i Degree difference from the current temperature" %(t, tempDiff)
+            selectedTemp.config(text=result)
     except ValueError as error:
         selectedTemp.config(title='Error', message=error)
 
