@@ -3,6 +3,7 @@ from tkinter import *
 from adminControlPanel import AdminControl
 from zoneControlPanel import ZoneControl
 from TempSensor import TempSensor
+import time as Time
 
 running = True
 adminPanel = AdminControl()
@@ -34,15 +35,35 @@ label = tk.Label(text="Heating and Cooling System Controller", fg="black")
 def setTempClicked():
     try:
         t = int(setTempValueInt.get())
+        setTime = tk.Button(frameButtons,text="Set time")
+        setTime.grid(row=5,column=0,sticky="ew", padx=5,pady=5)
+        setTime.configure(command=setTimeClicked)
+        setTimeValue = Entry(answerWindow, bg="light yellow",textvariable=setTimeValueInt)
+        setTimeValue.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
         if t < 0 or t > 30:
             result = "The temperature you have submitted (%i) is outside the recommended range! Please select a temperature between 0-30 degrees celsius" %(t)
             selectedTemp.config(text=result)
+
+            
         else:
             tempDiff = t - int(currentTemp)
             result = "You have set the temperature to %i Degrees Celsius!\n There is a %i Degree difference from the current temperature" %(t, tempDiff)
             selectedTemp.config(text=result)
     except ValueError as error:
         selectedTemp.config(title='Error', message=error)
+
+def setTimeClicked():
+    time = int(setTimeValueInt.get())
+    adminPanel.set_timer(time)
+    while time > -1:
+        if time > 0:
+            result = "time : %i" %(time)
+        else:
+            result = "time is up!"
+        selectedTime.config(text=result)
+        answerWindow.update()
+        Time.sleep(1)
+        time = time -1
 
 def getTempClicked():
     curTemp = currentTemp
@@ -110,6 +131,8 @@ tutorial = tk.Button(frameButtons,text="How to use")
 tutorial.grid(row=4, column=0, sticky="ew", padx=5)
 tutorial.configure(command=tutorialClicked)
 
+setTimeValueInt = IntVar()
+
 setTempValueInt = IntVar()
 setTempValue = Entry(answerWindow, bg="light yellow", textvariable=setTempValueInt)
 setTempValue.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
@@ -118,7 +141,7 @@ getTempValue = tk.Label(answerWindow, text="Current Temperature is :")
 getTempValue.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
 
 selectedTemp = tk.Label(answerWindow)
-selectedTemp.grid(row=5, column=0, sticky="ew", padx=5,pady=5)
+selectedTemp.grid(row=6, column=0, sticky="ew", padx=5,pady=5)
 
 heatingValue = StringVar()
 heatingToggle = tk.Label(answerWindow, text="Heating default state is OFF")
@@ -126,6 +149,9 @@ heatingToggle.grid(row=2, column=0, sticky="ew", padx=5)
 
 coolingToggle = tk.Label(answerWindow, text="Cooling default state is OFF")
 coolingToggle.grid(row=3, column=0, sticky="ew", padx=5, pady=5)
+
+selectedTime = tk.Label(answerWindow)
+selectedTime.grid(row=5, column=1, sticky="ew", padx=5,pady=15)
 
 tutorialText = tk.Label(answerWindow, text="")
 tutorialText.grid(row=4, column=0, sticky="ew", padx=5)
