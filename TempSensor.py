@@ -7,6 +7,7 @@ class TempSensor:
 
     def __init__(self):
         self._temp = randint(18, 25)
+        self._outside_temp = randint(0, 30)
 
     def get_temp(self):
         headers = {
@@ -20,3 +21,7 @@ class TempSensor:
         self._temp = temperature
       
         return self._temp
+
+    def get_outside_temp(self):
+        self.get_temp()
+        return self._outside_temp
