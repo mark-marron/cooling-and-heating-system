@@ -20,9 +20,9 @@ class AdminControl:
         if avg_temp_list is not None:
             if len(avg_temp_list) >= 10:
                 avg_temp_list.pop(0)
-                avg_temp_list.append(self._temp)
+                avg_temp_list.append(int(self._temp))  # Cast to int for averaging operation, _temp inputs are str
             else:
-                avg_temp_list.append(self._temp)
+                avg_temp_list.append(int(self._temp))
         return sum(avg_temp_list) / len(avg_temp_list)
 
     def get_avg_temp(self):

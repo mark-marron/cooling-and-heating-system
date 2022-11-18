@@ -10,4 +10,5 @@ z2 = ZoneControl()
 zonePanels = []
 
 while running:
-    print(z1.get_temp())
+    print("Zone 1 Temp: ", z1.get_temp())  # Prints a string
+    print("Average Temp:", adminPanel.avg_temp())  # Prints an int
