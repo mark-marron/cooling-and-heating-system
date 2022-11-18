@@ -1,27 +1,32 @@
 import time
 import datetime
-
-
-def avg_temp(temp):
-    avg_temp_list = []
-    if avg_temp_list is not None:
-        if len(avg_temp_list) >= 10:
-            avg_temp_list.pop(0)
-            avg_temp_list.append(temp)
-        else:
-            avg_temp_list.append(temp)
-    return sum(avg_temp_list) / len(avg_temp_list)
+from TempSensor import TempSensor
 
 
 class AdminControl:
 
     def __init__(self):
+        self._timer = None
+        self._timer_end_msg = None
+        self._total_seconds = None
         self._target_temp = 0
         self._time_remaining = 180  # Time in Seconds
         self._state = 5
+        self._temp_sensor = TempSensor()
+        self._temp = self._temp_sensor.get_temp()
+
+    def avg_temp(self):
+        avg_temp_list = []
+        if avg_temp_list is not None:
+            if len(avg_temp_list) >= 10:
+                avg_temp_list.pop(0)
+                avg_temp_list.append(self._temp)
+            else:
+                avg_temp_list.append(self._temp)
+        return sum(avg_temp_list) / len(avg_temp_list)
 
     def get_avg_temp(self):
-        return avg_temp
+        return self.avg_temp()
 
     def set_target_temp(self, input_target):
         if type(input_target) == str:
@@ -48,12 +53,11 @@ class AdminControl:
     def get_timer(self):
         self._timer_end_msg = "Timer finished!"
         while self._total_seconds > 0:
-            self._timer = datetime.timedelta(seconds = self._total_seconds)
+            self._timer = datetime.timedelta(seconds=self._total_seconds)
             print(self._timer, end="\r")
             time.sleep(1)
             self._total_seconds = self._total_seconds - 1
         return self._timer_end_msg
-        
 
     def set_timer(self, input_time):
         if type(input_time) == str:
@@ -72,7 +76,6 @@ class AdminControl:
             if input_time > 0:
                 self._total_seconds = input_time
                 return "time set"
-        
 
     def toggle_fan(self):
         self._state = 1
