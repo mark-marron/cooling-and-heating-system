@@ -22,6 +22,3 @@ class TempSensor:
       
         return self._temp
 
-    def get_outside_temp(self):
-        self.get_temp()
-        return self._outside_temp
