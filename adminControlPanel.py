@@ -1,16 +1,27 @@
 import time
 import datetime
 
+
+def avg_temp(temp):
+    avg_temp_list = []
+    if avg_temp_list is not None:
+        if len(avg_temp_list) >= 10:
+            avg_temp_list.pop(0)
+            avg_temp_list.append(temp)
+        else:
+            avg_temp_list.append(temp)
+    return sum(avg_temp_list) / len(avg_temp_list)
+
+
 class AdminControl:
 
     def __init__(self):
         self._target_temp = 0
-        self._avg_temp = 22
         self._time_remaining = 180  # Time in Seconds
         self._state = 5
 
     def get_avg_temp(self):
-        return self._avg_temp
+        return avg_temp
 
     def set_target_temp(self, input_target):
         if type(input_target) == str:
@@ -22,7 +33,7 @@ class AdminControl:
         if type(input_target) == dict:
             raise TypeError("A positive integer number is supposed to be entered, not a dictionary")
         if type(input_target) == int:
-            if input_target > 0 and input_target < 30:
+            if 0 < input_target < 30:
                 self._target_temp = input_target
             if input_target >= 30:
                 self._target_temp = 30

@@ -2,6 +2,7 @@ from random import randint
 from bs4 import BeautifulSoup
 import requests
 
+
 class TempSensor:
 
     def __init__(self):
@@ -14,7 +15,7 @@ class TempSensor:
         req = requests.get(
            f'https://www.google.com/search?q=+cork+weather+&oq=+cork+weather+&aqs=chrome.0.35i39l2j0l4j46j69i60.6128j1j7&sourceid=chrome&ie=UTF-8', headers=headers)
         
-        soup = BeautifulSoup(req.text ,'html.parser')
+        soup = BeautifulSoup(req.text, 'html.parser')
         temperature = soup.select('#wob_tm')[0].getText().strip()
         self._temp = temperature
       
