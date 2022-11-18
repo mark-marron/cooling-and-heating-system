@@ -82,3 +82,9 @@ class AdminControl:
 
     def toggle_heater(self):
         self._state = 4
+    
+    def set_room(self):
+        self._rooms = ['kitchen','living room', 'bedroom1','bedroom2','dining room', 'hallway']
+
+    def get_room(self):
+        return self._rooms
