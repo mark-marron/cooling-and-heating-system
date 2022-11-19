@@ -18,6 +18,9 @@ tutorial_on = True
 options = adminPanel.get_room()
 
 root = tk.Tk()
+'''
+displays the current temperature outside to the user
+'''
 def getCurrentTemp():
     currentTempint = z1.get_temp()
     currentTemp = str(currentTempint)
@@ -33,6 +36,11 @@ frameButtons = tk.Frame(root, relief=tk.RAISED, bd=2)
 
 label = tk.Label(text="Heating and Cooling System Controller", fg="black")
 
+'''
+When set temp button is clicked the target temp value is set to the users inputted value
+a message is displayed to tell the user they have set the temperature and what the current difference in temp is from the outside temperature
+also gives the user the option to set a timer once set temp is clicked
+'''
 def setTempClicked():
     try:
         t = int(setTempValueInt.get())
@@ -53,6 +61,9 @@ def setTempClicked():
     except ValueError as error:
         selectedTemp.config(title='Error', message=error)
 
+'''
+allows the user to set a timer for the heating/ cooling to turn off once it reaches 0
+'''
 def setTimeClicked():
     time = int(setTimeValueInt.get())
     adminPanel.set_timer(time)
@@ -66,11 +77,17 @@ def setTimeClicked():
         Time.sleep(1)
         time = time -1
 
+'''
+displays the current temperature outside to the user
+'''
 def getTempClicked():
     curTemp = currentTemp
     result2 = "Current Temperature is : %s Degrees Celsius" %(curTemp)
     getTempValue.config(text=result2)
 
+'''
+toggles the heating on and makes sure the cooling toggle cannot be on the same time as the heating
+'''
 def toggleHeatClick():
     global heat_on
     global cool_on
@@ -86,6 +103,9 @@ def toggleHeatClick():
         heatingToggle.config(text=result3)
         heat_on = True
 
+'''
+toggles the cooling on and makes sure the cooling cant be on the same time as the heating
+'''
 def toggleCoolClick():
     global cool_on
     global heat_on
@@ -101,10 +121,13 @@ def toggleCoolClick():
         coolingToggle.config(text=result4)
         cool_on = True
 
+'''
+displays a text box to the user on how to use the interface to change the temperature settings
+'''
 def tutorialClicked():
     global tutorial_on
     if tutorial_on:
-        result5 = "By clicking 'Get Temperature' the current temperature reading is displayed.\nBy enterning a value into the box next to 'Set Temperature' and then clicking the button this allows you to select a specific temperature you would like the room to reach\nBy clicking 'Toggle Heating' the Biomass Heating is turned on\nBy clicking 'Toggle Cooling' the Cooling Fans are turned on\n You can also close the Tutorial text by clicking 'How to use' once again"
+        result5 = "You can set the room you want to affect by clicking the dropdown menu and selecting a room.\nBy clicking 'Get Temperature' the current temperature reading is displayed.\nBy enterning a value into the box next to 'Set Temperature' and then clicking the button this allows you to select a specific temperature you would like the room to reach\nBy clicking 'Toggle Heating' the Biomass Heating is turned on\nBy clicking 'Toggle Cooling' the Cooling Fans are turned on\n You can also close the Tutorial text by clicking 'How to use' once again"
         tutorialText.config(text=result5)
         tutorial_on = False
     else:
