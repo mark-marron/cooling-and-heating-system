@@ -4,9 +4,10 @@ from TempSensor import TempSensor
 
 
 class AdminControl:
-    '''
-    Intializes variables - rooms, timer, timer_end_msg,total_seconds,target_temp,time_remaining, state, temp_sensor, temp
-    '''
+    """
+    Initializes variables - rooms, timer, timer_end_msg,total_seconds,target_temp,time_remaining, state, temp_sensor,
+    temp
+    """
     def __init__(self):
         self._rooms = ['kitchen', 'living room', 'bedroom1', 'bedroom2', 'dining room', 'hallway']
         self._timer = None
