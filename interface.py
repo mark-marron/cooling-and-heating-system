@@ -17,11 +17,6 @@ cool_on = True
 tutorial_on = True
 
 root = tk.Tk()
-def getCurrentTemp():
-    currentTempint = z1.get_temp()
-    currentTemp = str(currentTempint)
-    return currentTemp
-
     
 root.title('Heating and Cooling System Controller')
 root.rowconfigure(0, minsize=200, weight=1)
