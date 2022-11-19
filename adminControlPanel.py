@@ -52,12 +52,17 @@ class AdminControl:
         if type(input_target) == int:
             if 0 < input_target < 30:
                 self._target_temp = input_target
+                return self._target_temp
             if input_target >= 30:
                 self._target_temp = 30
+                return self._target_temp
             if input_target <= 0:
                 self._target_temp = 0
+                return self._target_temp
         if type(input_target) == float:
             raise TypeError("Please enter a whole positive integer, not a float.")
+        else:
+            raise TypeError("You have entered the wrong type in please enter a positive integer between 0-30")
 
     '''
     Returns the target temperature
@@ -95,8 +100,10 @@ class AdminControl:
             if input_time < 0:
                 raise ValueError("A positive integer number is supposed to be entered, not a negative value")
             if input_time > 0:
-                self._total_seconds = input_time
+                self._total_seconds = int(input_time)
                 return "time set"
+        else:
+            raise TypeError("You have entered the wrong type please enter a positive integer")
 
     '''
     Toggles fan
