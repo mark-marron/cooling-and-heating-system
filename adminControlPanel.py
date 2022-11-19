@@ -6,6 +6,7 @@ from TempSensor import TempSensor
 class AdminControl:
 
     def __init__(self):
+        self._rooms = None
         self._timer = None
         self._timer_end_msg = None
         self._total_seconds = None
@@ -84,7 +85,8 @@ class AdminControl:
         self._state = 4
     
     def set_room(self):
-        self._rooms = ['kitchen','living room', 'bedroom1','bedroom2','dining room', 'hallway']
+        self._rooms = ['kitchen', 'living room', 'bedroom1', 'bedroom2', 'dining room', 'hallway']
 
     def get_room(self):
         return self._rooms
+    
