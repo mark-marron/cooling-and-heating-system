@@ -14,7 +14,7 @@ class AdminControl:
         self._time_remaining = 180  # Time in Seconds
         self._state = 5
         self._temp_sensor = TempSensor()
-        self._temp = self._temp_sensor.get_temp()
+        self._temp = self._temp_sensor.get_outside_temp()
 
     def avg_temp(self):
         avg_temp_list = []
