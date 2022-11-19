@@ -5,10 +5,15 @@ import requests
 
 class TempSensor:
 
+    '''
+    intializes variable outside_temp
+    '''
     def __init__(self):
-        self._temp = randint(18, 25)
         self._outside_temp = randint(0, 30)
 
+    '''
+    Uses a web crawler to get the current temperature in cork city and returns this value
+    '''
     def get_outside_temp(self):
         headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
