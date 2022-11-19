@@ -15,6 +15,8 @@ class Testset_target_temp(unittest.TestCase):
 
         self.assertRaises(TypeError, a1.set_target_temp, a1, {'key':'item'})
 
+        self.assertRaises(TypeError, a1.set_target_temp, a1, 5.79J)
+
     def test_temp_values(self):
         #Test temp when temp values are of correct type but outside the range specified in interface.py
         a1.set_target_temp(a1,-6)
@@ -40,3 +42,5 @@ class Testset_timer(unittest.TestCase):
         self.assertRaises(TypeError, a1.set_timer, a1, {'key':'item'})
 
         self.assertRaises(ValueError, a1.set_timer, a1, -5)
+
+        self.assertRaises(TypeError, a1.set_timer, a1, 5.79J)
