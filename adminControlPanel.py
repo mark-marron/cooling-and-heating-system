@@ -4,9 +4,11 @@ from TempSensor import TempSensor
 
 
 class AdminControl:
-
+    '''
+    Intializes variables - rooms, timer, timer_end_msg,total_seconds,target_temp,time_remaining, state, temp_sensor, temp
+    '''
     def __init__(self):
-        self._rooms = None
+        self._rooms = ['kitchen', 'living room', 'bedroom1', 'bedroom2', 'dining room', 'hallway']
         self._timer = None
         self._timer_end_msg = None
         self._total_seconds = None
@@ -16,6 +18,9 @@ class AdminControl:
         self._temp_sensor = TempSensor()
         self._temp = self._temp_sensor.get_outside_temp()
 
+    '''
+    Sets the Average temperature
+    '''
     def avg_temp(self):
         avg_temp_list = []
         if avg_temp_list is not None:
@@ -26,9 +31,15 @@ class AdminControl:
                 avg_temp_list.append(int(self._temp))
         return sum(avg_temp_list) / len(avg_temp_list)
 
+    '''
+    Returns the average temperature
+    '''
     def get_avg_temp(self):
         return self.avg_temp()
 
+    '''
+    Sets the target temperature - input from user cannot be another other than an integer in the range 0 - 30
+    '''
     def set_target_temp(self, input_target):
         if type(input_target) == str:
             raise TypeError("Please enter a whole positive integer, not a string.")
@@ -48,9 +59,15 @@ class AdminControl:
         if type(input_target) == float:
             raise TypeError("Please enter a whole positive integer, not a float.")
 
+    '''
+    Returns the target temperature
+    '''
     def get_target_temp(self):
         return self._target_temp
 
+    '''
+    Returns current timer value and end message when total seconds = 0
+    '''
     def get_timer(self):
         self._timer_end_msg = "Timer finished!"
         while self._total_seconds > 0:
@@ -60,6 +77,9 @@ class AdminControl:
             self._total_seconds = self._total_seconds - 1
         return self._timer_end_msg
 
+    '''
+    Sets the total seconds variable - how long the user wants the timer to be - must be an integer
+    '''
     def set_timer(self, input_time):
         if type(input_time) == str:
             raise TypeError("A positive integer number is supposed to be entered, not a string")
@@ -78,15 +98,29 @@ class AdminControl:
                 self._total_seconds = input_time
                 return "time set"
 
+    '''
+    Toggles fan
+    sets state to 1
+    '''
     def toggle_fan(self):
         self._state = 1
 
+    '''
+    Toggles heating
+    sets state to 4
+    '''
     def toggle_heater(self):
         self._state = 4
     
+    '''
+    Sets the rooms at which the admin can select to make temperature changes to
+    '''
     def set_room(self):
         self._rooms = ['kitchen', 'living room', 'bedroom1', 'bedroom2', 'dining room', 'hallway']
 
+    '''
+    Returns the list of rooms for the admin
+    '''
     def get_room(self):
         return self._rooms
     
