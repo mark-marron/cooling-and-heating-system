@@ -16,6 +16,7 @@ heat_on = True
 cool_on = True
 tutorial_on = True
 options = adminPanel.get_room()
+settingsDict = {}
 
 root = tk.Tk()
 '''
@@ -145,12 +146,15 @@ displays a text box to the user on how to use the interface to change the temper
 def tutorial_clicked():
     global tutorial_on
     if tutorial_on:
-        result5 = "You can set the room you want to affect by clicking the dropdown menu and selecting a room.\nBy " \
-                  "clicking 'Get Temperature' the current temperature reading is displayed.\nBy enterning a value " \
-                  "into the box next to 'Set Temperature' and then clicking the button this allows you to select a " \
-                  "specific temperature you would like the room to reach\nBy clicking 'Toggle Heating' the Biomass " \
-                  "Heating is turned on\nBy clicking 'Toggle Cooling' the Cooling Fans are turned on\n You can also " \
-                  "close the Tutorial text by clicking 'How to use' once again "
+        result5 = "You can set the room you want to affect by clicking the dropdown menu and selecting a room.\n\nBy " \
+                  "clicking 'Get Temperature' the current temperature reading is displayed.\n\nBy enterning a value " \
+                  "into the box next to 'Set Temperature' and then clicking the button \nthis allows you to select a " \
+                  "specific temperature you would like the room to reach\n\nBy clicking 'Toggle Heating' the Biomass " \
+                  "Heating is turned on and off once clicked again\n\nBy clicking 'Toggle Cooling' the Cooling Fans are turned on and off once clicked again\n\n If you would " \
+                  "like you can set a room and set a temperature for the room, then click 'Save settings'\nand this allows" \
+                  " you to save different set temperatures for different rooms\n\n You can then load these saved temperatures" \
+                  " again by selecting a room and click 'Load Setting'\n\nYou can also " \
+                  "close this tutorial text by clicking 'How to use' once again "
         tutorialText.config(text=result5)
         tutorial_on = False
     else:
@@ -158,13 +162,31 @@ def tutorial_clicked():
         tutorialText.config(text=result5)
         tutorial_on = True
 
+def set_room():
+    result = "Room selected : %s" %(clicked.get())
+    setRoom.config(text=result)
+
+def get_settings():
+    result = "Set Temperature in %s is %s" %(clicked.get(), settingsDict[clicked.get()])
+    selectedTemp.config(text=result)
+
+
+def set_settings():
+    room = clicked.get()
+    settingsDict[room] = setTempValueInt.get()
+    getSettings = tk.Button(frameButtons, text="Load Settings")
+    getSettings.grid(row=8,column=0, sticky="ew",padx=5,pady=5)
+    getSettings.configure(command=get_settings)
 
 clicked = StringVar()
 setRoom = OptionMenu(answerWindow, clicked, *options)
 setRoom.grid(row=0, column=0, sticky="ew", padx=5)
 
-selectRoom = tk.Label(frameButtons, text="Select a room")
+selectRoom = tk.Button(frameButtons, text="Set a room")
 selectRoom.grid(row=0, column=0, sticky="ew", padx=5)
+selectRoom.configure(command=set_room)
+
+
 
 getTemp = tk.Button(frameButtons, text="Get Temperature")
 getTemp.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
@@ -186,11 +208,15 @@ tutorial = tk.Button(frameButtons, text="How to use")
 tutorial.grid(row=6, column=0, sticky="ew", padx=5, pady=5)
 tutorial.configure(command=tutorial_clicked)
 
+setSettings = tk.Button(frameButtons, text="Save Settings")
+setSettings.grid(row=7, column=0,sticky="ew", padx=5,pady=5)
+setSettings.configure(command=set_settings)
+
 setTimeValueInt = IntVar()
 
 setTempValueInt = IntVar()
 setTempValue = Entry(answerWindow, bg="light yellow", textvariable=setTempValueInt)
-setTempValue.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
+setTempValue.grid(row=2, column=0, sticky="ew", padx=5, pady=9)
 
 getTempValue = tk.Label(answerWindow, text="Current Temperature is :")
 getTempValue.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
@@ -206,10 +232,13 @@ coolingToggle = tk.Label(answerWindow, text="Cooling default state is OFF")
 coolingToggle.grid(row=4, column=0, sticky="ew", padx=5, pady=12)
 
 selectedTime = tk.Label(answerWindow)
-selectedTime.grid(row=6, column=1, sticky="ew", padx=5, pady=5)
+selectedTime.grid(row=5, column=1, sticky="ew", padx=5, pady=5)
 
 tutorialText = tk.Label(answerWindow, text="")
 tutorialText.grid(row=6, column=0, sticky="ew", padx=5, pady=5)
+
+setRoom = tk.Label(answerWindow, text="Room selected :")
+setRoom.grid(row=8, column=0, sticky="ew", padx=5, pady=5)
 
 frameButtons.grid(row=0, column=0, sticky="ns")
 answerWindow.grid(row=0, column=1, sticky="nsew")
