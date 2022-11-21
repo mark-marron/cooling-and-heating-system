@@ -5,7 +5,7 @@
 #### About the project 
 
 <p>
-This is a Cooling and Heating Control System project where the user should be able to control various aspects of the system to there desired temperature. We used Tkinter to create an interface for the user to interact with. The project will get the temperature outside of the building by scraping from the internet the temperature whenever the interface is running. There is 6 zones in our project and you can specify for each zone individually. The user is allowed to get and set the desired temperature they would like each zone in the building to to be aswell as a timer to allow the user to specify the length of time they would like this function to be run. Depending on the desired temperature the Heating or Cooling Fan will turn on and once the temperature required is met the system will maintain the temperature until it is changed or the timer runs out. The Heating and Cooling Fan can both be toggled/overridden manually by the user if desired.  We added a how to use section in the interface to allow a new user to understand the interface quickly.
+This is a Cooling and Heating Control System project where the user should be able to control various aspects of the system to there desired temperature. We used Tkinter to create an interface for the user to interact with. The project will get the temperature outside of the building by scraping from the internet the temperature whenever the interface is running. There is 6 zones in our project and you can specify for each zone individually. The user is allowed to get and set the desired temperature they would like each zone in the building to to be aswell as a timer to allow the user to specify the length of time they would like this function to be run. Depending on the desired temperature the Heating or Cooling Fan will turn on and once the temperature required is met the system will maintain the temperature until it is changed or the timer runs out. The Heating and Cooling Fan can both be toggled/overridden manually by the user if desired.  We added a how to use section in the interface to allow a new user to understand the interface quickly. We used Python to implement the project as it was the language the team feeled most comfortsble with.
 </p>
 
 #### Implementation
@@ -51,6 +51,10 @@ This is a Cooling and Heating Control System project where the user should be ab
 
 
 
-
+### Contributors
+- Sean Malone
+- Joseph O'Donovan
+- Mark Marron
+- Eoin O'Sullivan
 
 ADDING MORE THIS COMMIT IS JUST TO SAVE PROGRESS
