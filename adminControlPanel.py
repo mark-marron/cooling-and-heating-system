@@ -18,6 +18,7 @@ class AdminControl:
         self._state = 5
         self._temp_sensor = TempSensor()
         self._temp = self._temp_sensor.get_outside_temp()
+        self._prev_temps = []
 
     '''
     Sets the Average temperature
@@ -37,6 +38,17 @@ class AdminControl:
     '''
     def get_avg_temp(self):
         return self.avg_temp()
+
+    '''
+    Returns the Average outisde temperature - will be called every hour
+    '''
+    def get_avg_outside_temp(self):
+        if len(self._prev_temps) < 24:
+            self._prev_temps.append(self._temp_sensor.get_outside_temp())
+        else:
+            self._prev_temps.pop(0)
+            self._prev_temps.append(self._temp_sensor.get_outside_temp())
+        return sum(self._prev_temps) / len(self._prev_temps)
 
     '''
     Sets the target temperature - input from user cannot be another other than an integer in the range 0 - 30
