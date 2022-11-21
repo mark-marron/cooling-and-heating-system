@@ -10,6 +10,18 @@ This is a Cooling and Heating Control System project where the user should be ab
 
 #### Implementation
 
+##### Main Objectives
+
+* Get the temperature
+* Set the temperature
+* Set Timer
+* Set Zone
+* Toggle Fan
+* Toggle Heating
+* Implement tkinter Interface
+* Unit Testing
+* Create system to regulate the heat and maintain it at the designated temperature
+
 ##### Files
 
 * adminControlPanel.py: Implements all the functions required for the admin interface.
