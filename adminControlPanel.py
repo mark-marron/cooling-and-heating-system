@@ -44,10 +44,10 @@ class AdminControl:
     '''
     def get_avg_outside_temp(self):
         if len(self._prev_temps) < 24:
-            self._prev_temps.append(self._temp_sensor.get_outside_temp())
+            self._prev_temps.append(int(self._temp_sensor.get_outside_temp()))
         else:
             self._prev_temps.pop(0)
-            self._prev_temps.append(self._temp_sensor.get_outside_temp())
+            self._prev_temps.append(int(self._temp_sensor.get_outside_temp()))
         return sum(self._prev_temps) / len(self._prev_temps)
 
     '''
