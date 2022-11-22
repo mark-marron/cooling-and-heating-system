@@ -2,6 +2,7 @@ from TempSensor import TempSensor
 from adminControlPanel import AdminControl
 from time import sleep
 from random import randint
+import asyncio
 
 
 class ZoneControl:
@@ -14,7 +15,7 @@ class ZoneControl:
         self._target_temp = 0
         self._total_seconds = 0
         self._state = 5
-        self._temp = self._temp_sensor.get_outside_temp()
+        self._temp = int(self._temp_sensor.get_outside_temp())
         self._zone_temp = randint(8, 15)
         self._heater_running = False
         self._fans_running = False
@@ -85,7 +86,7 @@ class ZoneControl:
     def reset_state(self):
         self._state = 5
 
-    def temperature_physics(self):
+    async def temperature_physics(self):
         if self._target_temp > self._zone_temp:
             self.toggle_heater()
         elif self._target_temp < self._zone_temp:
@@ -93,8 +94,8 @@ class ZoneControl:
 
         if self.get_state() == 5:  # If heating and fan are off
             if self._zone_temp > self._temp:
-                self._temp -= 1
-                sleep(self._tminus_ambient_temp_decrease)  # 1 deg decrease in temp via ambient losses
+                self._zone_temp -= 1
+                await asyncio.sleep(self._tminus_ambient_temp_decrease)  # 1 deg decrease in temp via ambient losses
             elif self._zone_temp <= self._temp:
                 self._zone_temp = self._temp
 
@@ -103,17 +104,17 @@ class ZoneControl:
                 self.reset_state()  # Turn heating off
             elif self._target_temp > self._zone_temp:
                 self._zone_temp += 1
-                sleep(self._tminus_temp_increase)  # 1 deg increase in temp takes _tminus_temp_increase seconds
+                await asyncio.sleep(self._tminus_temp_increase)  # 1 deg increase in temp takes _tminus_temp_increase seconds
             elif self._target_temp < self._zone_temp:
                 self.toggle_fan()
-                sleep(self._tminus_temp_decrease)  # 1 deg decrease in temp takes _tminus_temp_decrease seconds
+                await asyncio.sleep(self._tminus_temp_decrease)  # 1 deg decrease in temp takes _tminus_temp_decrease seconds
 
         elif self.get_state() == 1:  # If fan is on
             if self._target_temp == self._zone_temp:
                 self.reset_state()
             elif self._target_temp < self._zone_temp:
                 self._zone_temp -= 1
-                sleep(self._tminus_temp_decrease)  # 1 deg decrease in temp takes _tminus_temp_increase seconds
+                await asyncio.sleep(self._tminus_temp_decrease)  # 1 deg decrease in temp takes _tminus_temp_increase seconds
             elif self._target_temp > self._zone_temp:
                 self.toggle_heater()
-                sleep(self._tminus_temp_decrease)  # 1 deg increase in temp takes _tminus_temp_decrease seconds
+                await asyncio.sleep(self._tminus_temp_decrease)  # 1 deg increase in temp takes _tminus_temp_decrease seconds
