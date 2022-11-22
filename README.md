@@ -40,6 +40,8 @@ This is a Cooling and Heating Control System project where the user should be ab
 * [Python 3.6](https://www.python.org/downloads/release/python-360/) installed.
 * A code editor. Recommended [VS Code](https://code.visualstudio.com/download).
 * The Beautiful Soup python libray [bs4](https://pypi.org/project/bs4/)
+* The Beautiful soup requests library [bs4 requests](https://pypi.org/project/bs4/)
+
 
 #### Instructions
 
@@ -47,6 +49,7 @@ This is a Cooling and Heating Control System project where the user should be ab
 * Extract all from the zip and save the folder to your computer.
 * Open the folder in a code editor.
 * pip install [bs4](https://pypi.org/project/bs4/) in the terminal(bs4 is required for the function to run).
+* pip install [bs4 requests](https://pypi.org/project/bs4/) in the terminal(bs4 is required for the function to run).
 * To Run the function open the **interface.py** file and run the code.
 * To Run the admin version of the function open the **adminInterface.py** file and run code
 * Follow the instructions from the **how to use** section of the tkinter window.
