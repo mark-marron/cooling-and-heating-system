@@ -11,7 +11,7 @@ z1 = ZoneControl()
 zonePanels = []
 temp = TempSensor
 currentTempint = z1.get_zone_temp()
-currentTemp = str(currentTempint)
+currentTemp = currentTempint
 heat_on = True
 cool_on = True
 tutorial_on = True
@@ -81,7 +81,7 @@ displays the current temperature outside to the user
 
 def get_temp_clicked():
     cur_temp = currentTemp
-    result2 = "Current Temperature is : %s Degrees Celsius" % cur_temp
+    result2 = "Current Temperature is : %i Degrees Celsius" % cur_temp
     getTempValue.config(text=result2)
 
 

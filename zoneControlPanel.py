@@ -12,7 +12,7 @@ class ZoneControl:
 
     def __init__(self):
         self._temp_sensor = TempSensor()
-        self._target_temp = 0
+        self._target_temp = None
         self._total_seconds = 0
         self._state = 5
         self._temp = int(self._temp_sensor.get_outside_temp())

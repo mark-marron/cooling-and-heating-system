@@ -17,8 +17,8 @@ while running:
     # print("Average Temp:", adminPanel.avg_temp())  # Prints an int
     asyncio.run(z1.temperature_physics())  # calling temperature_physics function
     print("Zone 1:")
-    print(z1.get_zone_temp())
-    print(z1.get_temp())
-    print(z1.get_target_temp())
-    print(z1.get_state())
+    print("zone temp", z1.get_zone_temp())
+    print("outside temp", z1.get_temp())
+    print("target temp", z1.get_target_temp())
+    print("zone state", z1.get_state())
     sleep(5)
