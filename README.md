@@ -30,8 +30,8 @@ This is a Cooling and Heating Control System project where the user should be ab
 * TempSensor.py: Uses a web crawler to initalize the temperature and get the current temperature outside the building.
 * test_adminControlPanel.py: Creates a set of unit tests for the admin control panel to verify there is no errors in the code.
 * test_zoneControlPanel.py: Creates a set of unit tests for the zone control panel to verify there is no errors in the code.
-* test.py: prints the temp in the console to ensure the code is running correctly
-* zoneControlPanel.py: Implements the functions required to set changes to each zone individually
+* test.py: prints the temp in the console to ensure the code is running correctly.
+* zoneControlPanel.py: Implements the functions required to set changes to each zone individually.
 
 ## Installation
 
