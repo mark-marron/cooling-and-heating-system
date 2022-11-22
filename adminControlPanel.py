@@ -10,15 +10,15 @@ class AdminControl:
     """
     def __init__(self):
         self._rooms = ['kitchen', 'living room', 'bedroom1', 'bedroom2', 'dining room', 'hallway']
-        self._timer = None
-        self._timer_end_msg = None
-        self._total_seconds = None
-        self._target_temp = 0
+        self._timer = None #Timer
+        self._timer_end_msg = None #Lets the user know the time is complete
+        self._total_seconds = None #total seconds 
+        self._target_temp = 0 #Target temperature
         self._time_remaining = 180  # Time in Seconds
-        self._state = 5
-        self._temp_sensor = TempSensor()
+        self._state = 5 #used to toggle heating and cooling
+        self._temp_sensor = TempSensor() #calling function TempSensor()
         self._temp = self._temp_sensor.get_outside_temp()
-        self._prev_temps = []
+        self._prev_temps = [] #previous temperatures set
 
     '''
     Sets the Average temperature
