@@ -40,7 +40,7 @@ class AdminControl:
         return self.avg_temp()
 
     '''
-    Returns the Average outisde temperature - will be called every hour
+    Returns the Average outside temperature - will be called every hour
     '''
     def get_avg_outside_temp(self):
         if len(self._prev_temps) < 24:
