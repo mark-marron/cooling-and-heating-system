@@ -21,6 +21,7 @@ class ZoneControl:
         self._fans_running = False
         self._tminus_ambient_temp_decrease = 30  # Time is takes until _zone_temp decreases when Fan and Heating are
         # off, ambient temperature drop via losses
+        self._tminus_ambient_temp_increase = 20
         self._tminus_temp_decrease = 5  # Time takes until _zone_temp decreases by 1 Degree
         self._tminus_temp_increase = 5   # Time takes until _zone_temp increases by 1 Degree
 
@@ -96,7 +97,10 @@ class ZoneControl:
             if self._zone_temp > self._temp:
                 self._zone_temp -= 1
                 await asyncio.sleep(self._tminus_ambient_temp_decrease)  # 1 deg decrease in temp via ambient losses
-            elif self._zone_temp <= self._temp:
+            elif self._zone_temp < self._temp:
+                self._zone_temp += 1
+                await asyncio.sleep(self._tminus_ambient_temp_increase)
+            elif self._zone_temp == self._temp:
                 self._zone_temp = self._temp
 
         elif self.get_state() == 4:  # If heating is on
