@@ -4,17 +4,18 @@ from adminControlPanel import AdminControl
 from zoneControlPanel import ZoneControl
 from TempSensor import TempSensor
 import time as Time
+import asyncio
 
 running = True
 adminPanel = AdminControl()
 z1 = ZoneControl()
 zonePanels = []
-temp = TempSensor
+temp = z1._temp
 currentTempint = z1.get_zone_temp()
-currentTemp = currentTempint
+ZoneControl._state = 5
+tutorial_on = True
 heat_on = True
 cool_on = True
-tutorial_on = True
 
 root = tk.Tk()
 
@@ -30,11 +31,13 @@ label = tk.Label(text="Heating and Cooling System Controller", fg="black")
 '''When set temp button is clicked the target temp value is set to the users inputted value a message is displayed to 
 tell the user they have set the temperature and what the current difference in temp is from the outside temperature 
 also gives the user the option to set a timer once set temp is clicked '''
-
+'''while running:
+    asyncio.run(z1.temperature_physics())'''
 
 def set_temp_clicked():
     try:
         t = int(setTempValueInt.get())
+        z1._target_temp = t
         set_time = tk.Button(frameButtons, text="Set time")
         set_time.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
         set_time.configure(command=set_time_clicked)
@@ -46,11 +49,12 @@ def set_temp_clicked():
                      "temperature between 0-30 degrees celsius" % t
             selectedTemp.config(text=result)
 
-        else:
-            temp_diff = t - int(currentTemp)
-            result = "You have set the temperature to %i Degrees Celsius!\n There is a %i Degree difference from the " \
-                     "current temperature" % (t, temp_diff)
-            selectedTemp.config(text=result)
+        elif (currentTempint != t) and (t >= 0 or t <= 30):
+                temp_diff = z1._target_temp - currentTempint
+                result = "You have set the temperature to %i Degrees Celsius!\n There is a %i Degree difference from the " \
+                     "current temperature" % (z1._target_temp, temp_diff)
+                
+                selectedTemp.config(text=result)
     except ValueError as error:
         selectedTemp.config(title='Error', message=error)
 
@@ -80,7 +84,7 @@ displays the current temperature outside to the user
 
 
 def get_temp_clicked():
-    cur_temp = currentTemp
+    cur_temp = currentTempint
     result2 = "Current Temperature is : %i Degrees Celsius" % cur_temp
     getTempValue.config(text=result2)
 
@@ -100,10 +104,13 @@ def toggle_heat_click():
         coolingToggle.config(text=result4)
         heat_on = False
         cool_on = True
+        z1._state = 4
     else:
         result3 = "Heating : OFF"
         heatingToggle.config(text=result3)
         heat_on = True
+        z1._state = 5
+
 
 
 '''
@@ -121,10 +128,12 @@ def toggle_cool_click():
         heatingToggle.config(text=result3)
         cool_on = False
         heat_on = True
+        z1._state = 1
     else:
         result4 = "Cooling : OFF"
         coolingToggle.config(text=result4)
         cool_on = True
+        z1._state = 5
 
 
 '''
@@ -197,3 +206,4 @@ frameButtons.grid(row=0, column=0, sticky="ns")
 answerWindow.grid(row=0, column=1, sticky="nsew")
 
 root.mainloop()
+
