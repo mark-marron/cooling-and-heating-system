@@ -40,7 +40,7 @@ This is a Cooling and Heating Control System project where the user should be ab
 * [Python 3.6](https://www.python.org/downloads/release/python-360/) installed.
 * A code editor. Recommended [VS Code](https://code.visualstudio.com/download).
 * The Beautiful Soup python libray [bs4](https://pypi.org/project/bs4/)
-* The Beautiful soup requests library [bs4 requests](https://pypi.org/project/bs4/)
+* The Beautiful Soup requests library [bs4 requests](https://pypi.org/project/bs4/)
 
 
 #### Instructions
@@ -64,4 +64,5 @@ This is a Cooling and Heating Control System project where the user should be ab
 - Mark Marron
 - Eoin O'Sullivan
 
-ADDING MORE THIS COMMIT IS JUST TO SAVE PROGRESS
+
+
