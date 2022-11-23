@@ -53,13 +53,13 @@ def set_temp_clicked():
         setTimeValue = Entry(answerWindow, bg="light yellow", textvariable=setTimeValueInt)
         setTimeValue.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
         if t < 0 or t > 30:
-            result = "The temperature you have submitted (%i) is outside the recommended range! Please select a " \
+            result = "The temperature you have submitted (%i °C) is outside the recommended range! Please select a " \
                      "temperature between 0-30 degrees celsius" % t
             selectedTemp.config(text=result)
 
         else:
             tempDiff = t - int(currentTemp)
-            result = "You have set the temperature to %i Degrees Celsius!\n There is a %i Degree difference from the " \
+            result = "You have set the temperature to %i °C!\n There is a %i Degree difference from the " \
                      "current temperature" % (t, tempDiff)
             selectedTemp.config(text=result)
     except ValueError as error:
@@ -92,7 +92,7 @@ displays the current temperature outside to the user
 
 def get_temp_clicked():
     curTemp = currentTemp
-    result2 = "Current Temperature is : %s Degrees Celsius" % curTemp
+    result2 = "Current Temperature is : %s°C" % curTemp
     getTempValue.config(text=result2)
 
 
@@ -167,7 +167,7 @@ def set_room():
     setRoom.config(text=result)
 
 def get_settings():
-    result = "Set Temperature in %s is %s" %(clicked.get(), settingsDict[clicked.get()])
+    result = "Set Temperature in %s is %s°C" %(clicked.get(), settingsDict[clicked.get()])
     selectedTemp.config(text=result)
 
 
