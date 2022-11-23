@@ -45,13 +45,13 @@ def set_temp_clicked():
         set_time_value.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
 
         if t < 0 or t > 30:
-            result = "The temperature you have submitted (%i) is outside the recommended range! Please select a " \
+            result = "The temperature you have submitted (%i°C) is outside the recommended range! Please select a " \
                      "temperature between 0-30 degrees celsius" % t
             selectedTemp.config(text=result)
 
         elif (currentTempint != t) and (t >= 0 or t <= 30):
                 temp_diff = z1._target_temp - currentTempint
-                result = "You have set the temperature to %i Degrees Celsius!\n There is a %i Degree difference from the " \
+                result = "You have set the temperature to %i °C!\n There is a %i Degree difference from the " \
                      "current temperature" % (z1._target_temp, temp_diff)
                 
                 selectedTemp.config(text=result)
@@ -85,7 +85,7 @@ displays the current temperature outside to the user
 
 def get_temp_clicked():
     cur_temp = currentTempint
-    result2 = "Current Temperature is : %i Degrees Celsius" % cur_temp
+    result2 = "Current Temperature is : %i °C" % cur_temp
     getTempValue.config(text=result2)
 
 
@@ -144,10 +144,10 @@ displays a text box to the user on how to use the interface to change the temper
 def tutorial_clicked():
     global tutorial_on
     if tutorial_on:
-        result5 = "By clicking 'Get Temperature' the current temperature reading is displayed.\nBy enterning a value " \
+        result5 = "By clicking 'Get Temperature' the current temperature reading is displayed.\n\nBy enterning a value " \
                   "into the box next to 'Set Temperature' and then clicking the button this allows you to select a " \
-                  "specific temperature you would like the room to reach\nBy clicking 'Toggle Heating' the Biomass " \
-                  "Heating is turned on\nBy clicking 'Toggle Cooling' the Cooling Fans are turned on\n You can also " \
+                  "specific temperature you would like the room to reach\n\nBy clicking 'Toggle Heating' the Biomass " \
+                  "Heating is turned on\n\nBy clicking 'Toggle Cooling' the Cooling Fans are turned on\n\n You can also " \
                   "close the Tutorial text by clicking 'How to use' once again "
         tutorialText.config(text=result5)
         tutorial_on = False
