@@ -65,6 +65,18 @@ class AdminControl:
         if type(input_target) == int:
             if 0 < input_target < 30:
                 self._target_temp = input_target
+                if self._target_temp > int(TempSensor().get_outside_temp()):
+                    if self._target_temp - int(TempSensor().get_outside_temp()) > 3:  #if there is more than a 3 degree difference the biomass heating is turned on rather than the heatpump for heating
+                        self._state = 4
+                    else:
+                        self._state = 3
+                if self._target_temp < int(TempSensor().get_outside_temp()):
+                    if int(TempSensor().get_outside_temp()) - self._target_temp > 3:  #if there is more than a 3 degree difference the cooling fans are turned on rather than the heatpump for cooling
+                        self._state = 1
+                    else:
+                        self._state = 2
+                if self._target_temp == int(TempSensor().get_outside_temp()):   #if there is no temperature difference the state should be off as no heating or cooling needs to be done
+                    self._state = 5
                 return self._target_temp
             if input_target >= 30:
                 self._target_temp = 30
