@@ -27,6 +27,17 @@ class ZoneControl:
         self._tminus_temp_increase = 5   # Time takes until _zone_temp increases by 1 Degree
         self._start_time = 0
         self._time_taken = 0
+        self._cost_per_Kwh = 0.24  # Cost in eur per Kilowatt hour (0.24 = euro 24c)
+        self._power_consumed = 0  # Power in Kwh used by each heating/cooling option set in function power_usage
+
+    ''' 
+    state:
+    1 = fan
+    2 = heatpump cooling
+    3 = heatpump heating
+    4 = biomass heating
+    5 = off
+    '''
 
     '''
     Returns the temperature value for the temp sensor class 
@@ -128,10 +139,8 @@ class ZoneControl:
                 await asyncio.sleep(self._tminus_temp_decrease)  # 1C increase in temp takes _tminus_temp_decrease sec
 
     def new_temperature_physics(self):
-        t1 = self._start_time
         self._time_taken = int(time.time() - self._start_time)
         t2 = self._time_taken
-        print(t1, "\n", t2)
 
         if self._target_temp > self._zone_temp:
             self.toggle_heater()
@@ -173,3 +182,21 @@ class ZoneControl:
                     self._start_time = time.time()  # reset start time
             elif self._target_temp > self._zone_temp:
                 self.toggle_heater()
+
+    def power_usage(self):
+        if self.get_state() == 5:
+            self._power_consumed = 0
+
+        elif self.get_state() == 4:
+            self._power_consumed = 6
+
+        elif self.get_state() == 3:
+            self._power_consumed = 2
+
+        elif self.get_state() == 2:
+            self._power_consumed = 3
+
+        elif self.get_state() == 1:
+            self._power_consumed = 0.05
+
+
