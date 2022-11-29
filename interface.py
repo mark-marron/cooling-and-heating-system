@@ -4,6 +4,7 @@ from adminControlPanel import AdminControl
 from zoneControlPanel import ZoneControl
 from TempSensor import TempSensor
 import time as Time
+import threading
 import asyncio
 
 running = True
@@ -14,8 +15,6 @@ temp = z1._temp
 currentTempint = z1.get_zone_temp()
 z1._state = 5
 tutorial_on = True
-heat_on = True
-cool_on = True
 
 root = tk.Tk()
 
@@ -28,16 +27,16 @@ frameButtons = tk.Frame(root, relief=tk.RAISED, bd=2)
 
 label = tk.Label(text="Heating and Cooling System Controller", fg="black")
 
-'''When set temp button is clicked the target temp value is set to the users inputted value a message is displayed to 
-tell the user they have set the temperature and what the current difference in temp is from the outside temperature 
-also gives the user the option to set a timer once set temp is clicked '''
-'''while running:
-    asyncio.run(z1.temperature_physics())'''
+delay = 2
+
+start_time = threading.Timer(delay,z1.new_temperature_physics())
+
+start_time.start()
 
 def set_temp_clicked():
     try:
         t = int(setTempValueInt.get())
-        z1._target_temp = t
+        z1._target_temp = int(setTempValueInt.get()) 
         set_time = tk.Button(frameButtons, text="Set time")
         set_time.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
         set_time.configure(command=set_time_clicked)
@@ -50,6 +49,15 @@ def set_temp_clicked():
             selectedTemp.config(text=result)
 
         elif (currentTempint != t) and (t >= 0 or t <= 30):
+                #z1.new_temperature_physics()
+                if z1._zone_temp > z1._target_temp:
+                    z1._state = 1
+                    z1.new_temperature_physics()
+                elif z1._zone_temp < z1._target_temp:
+                    z1._state = 4
+                    z1.new_temperature_physics()
+                elif z1._zone_temp == z1._target_temp:
+                    z1._state = 5
                 temp_diff = z1._target_temp - currentTempint
                 result = "You have set the temperature to %i °C!\n There is a %i Degree difference from the " \
                      "current temperature" % (z1._target_temp, temp_diff)
@@ -84,9 +92,33 @@ displays the current temperature outside to the user
 
 
 def get_temp_clicked():
-    cur_temp = currentTempint
-    result2 = "Current Temperature is : %i °C" % cur_temp
+    z1.new_temperature_physics()
+    result2 = "Current Temperature is : %i °C" % z1.get_zone_temp()
     getTempValue.config(text=result2)
+    temp_diff = z1._target_temp - currentTempint
+    result = "You have set the temperature to %i °C!\n There is a %i Degree difference from the " \
+                  "current temperature" % (z1._target_temp, temp_diff)
+                
+    selectedTemp.config(text=result)
+    if z1._state == 4:
+        result3 = "Heating : ON"
+        result4 = "Cooling : OFF"
+        heatingToggle.config(text=result3)
+        coolingToggle.config(text=result4)
+        z1._state = 4 
+    elif z1._state == 1:
+        result4 = "Cooling : ON"
+        result3 = "Heating : OFF"
+        coolingToggle.config(text=result4)
+        heatingToggle.config(text=result3)
+        z1._state = 1
+    elif z1._state == 5:
+        result3 = "Heating : OFF"
+        heatingToggle.config(text=result3)
+        result4 = "Cooling : OFF"
+        coolingToggle.config(text=result4)
+        z1._state = 5
+
 
 
 '''
@@ -95,44 +127,41 @@ toggles the heating on and makes sure the cooling toggle cannot be on the same t
 
 
 def toggle_heat_click():
-    global heat_on
-    global cool_on
-    if heat_on:
+    if z1._state == 4:
+        z1._state = 5
+    elif z1._state != 4:
+        z1._state = 4
+    if z1._state==4:
         result3 = "Heating : ON"
-        result4 = "Cooling  : OFF"
+        result4 = "Cooling : OFF"
         heatingToggle.config(text=result3)
         coolingToggle.config(text=result4)
-        heat_on = False
-        cool_on = True
-        z1._state = 4
+        z1._state = 4 
     else:
         result3 = "Heating : OFF"
         heatingToggle.config(text=result3)
-        heat_on = True
         z1._state = 5
-
-
-
 '''
 toggles the cooling on and makes sure the cooling cant be on the same time as the heating
 '''
-
-
+'''
+while z1._zone_temp > z1._target_temp:
+    z1.new_temperature_physics
+'''
 def toggle_cool_click():
-    global cool_on
-    global heat_on
-    if cool_on:
+    if z1._state == 1:
+        z1._state = 5
+    elif z1._state != 1:
+        z1._state = 1
+    if z1._state==1:
         result4 = "Cooling : ON"
         result3 = "Heating : OFF"
         coolingToggle.config(text=result4)
         heatingToggle.config(text=result3)
-        cool_on = False
-        heat_on = True
         z1._state = 1
     else:
         result4 = "Cooling : OFF"
         coolingToggle.config(text=result4)
-        cool_on = True
         z1._state = 5
 
 
@@ -206,4 +235,3 @@ frameButtons.grid(row=0, column=0, sticky="ns")
 answerWindow.grid(row=0, column=1, sticky="nsew")
 
 root.mainloop()
-
