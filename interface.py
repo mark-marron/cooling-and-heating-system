@@ -95,7 +95,7 @@ def get_temp_clicked():
     z1.new_temperature_physics()
     result2 = "Current Temperature is : %i °C" % z1.get_zone_temp()
     getTempValue.config(text=result2)
-    temp_diff = z1._target_temp - currentTempint
+    temp_diff = z1._target_temp - int(z1.get_zone_temp())
     result = "You have set the temperature to %i °C!\n There is a %i Degree difference from the " \
                   "current temperature" % (z1._target_temp, temp_diff)
                 
