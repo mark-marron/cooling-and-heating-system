@@ -154,7 +154,7 @@ class ZoneControl:
 
     def new_temperature_physics(self):
         self._time_taken = int(time.time() - self._start_time)
-        t2 = self._time_taken
+        t2 = self._time_taken  # to be removed, only for testing purposes
         print("t2: ", t2)
 
         if self._target_temp > self._zone_temp:
@@ -165,12 +165,12 @@ class ZoneControl:
         if self.get_state() == 5:  # If heating and fan are off
             if self._zone_temp > self._temp:
                 if (t2 % self._tminus_ambient_temp_decrease == 0) and (t2 != 0):
-                    self._zone_temp -= (3/self._tminus_ambient_temp_decrease)  # Checking if
+                    self._zone_temp -= int(self._time_taken / self._tminus_ambient_temp_decrease)  # Checking if
                     # _tminus_ambient_temp_decrease has elapsed, if so minus the multiple of that time that has elapsed
                     self._start_time = time.time()  # reset start time
             elif self._zone_temp < self._temp:
                 if (t2 % self._tminus_ambient_temp_increase == 0) and (t2 != 0):
-                    self._zone_temp += (3 / self._tminus_ambient_temp_increase)  # Checking if
+                    self._zone_temp += int(self._time_taken / self._tminus_ambient_temp_increase)  # Checking if
                     # _tminus_ambient_temp_increase has elapsed, if so add the multiple of that time that has elapsed
                     self._start_time = time.time()  # reset start time
             elif self._zone_temp == self._temp:
@@ -181,7 +181,7 @@ class ZoneControl:
                 self.reset_state()  # Turn heating off
             elif self._target_temp > self._zone_temp:
                 if (t2 % self._tminus_temp_increase == 0) and (t2 != 0):
-                    self._zone_temp += (3/self._tminus_temp_increase)  # Checking if _tminus_temp_increase seconds
+                    self._zone_temp += int(self._time_taken / self._tminus_temp_increase)  # Checking if _tminus_temp_increase seconds
                     # has elapsed, if so add the multiple of that time that has
                     self._start_time = time.time()  # reset start time
                     self.power_usage()
@@ -193,7 +193,7 @@ class ZoneControl:
                 self.reset_state()
             elif self._target_temp < self._zone_temp:
                 if (t2 % self._tminus_temp_decrease == 0) and (t2 != 0):
-                    self._zone_temp -= (3 / self._tminus_temp_decrease)  # Checking if _tminus_temp_decrease seconds
+                    self._zone_temp -= int(self._time_taken / self._tminus_temp_decrease)  # Checking if _tminus_temp_decrease seconds
                     # has elapsed, if so minus the multiple of that time that has elapsed
                     self._start_time = time.time()  # reset start time
                     self.power_usage()
