@@ -4,13 +4,14 @@ from adminControlPanel import AdminControl
 from zoneControlPanel import ZoneControl
 
 adminPanel = AdminControl()
+zonePanel = ZoneControl()
 root = tk.Tk()
 
 root.title('Heating and Cooling System Controller')
 root.minsize(300, 200)
 
 def get_power_usage():
-    return 50
+    return zonePanel.get_power_consumed()
 
 def get_money_spent():
     return 100
