@@ -22,4 +22,5 @@ while running:
     print("outside temp", z1.get_temp())
     print("target temp", z1.get_target_temp())
     print("zone state", z1.get_state())
+    print("power consumed", z1.get_power_consumed())
     sleep(1)

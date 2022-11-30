@@ -7,7 +7,7 @@ import time
 
 class ZoneControl:
     """
-    intializes variables - temp_sensor, target_temp, total_seconds, state, temp, heater_running and fans running
+    initializes variables - temp_sensor, target_temp, total_seconds, state, temp, heater_running and fans running
     """
 
     def __init__(self):
@@ -18,8 +18,6 @@ class ZoneControl:
         self._state = 5
         self._temp = int(self._temp_sensor.get_outside_temp())
         self._zone_temp = randint(8, 15)
-        self._heater_running = False
-        self._fans_running = False
         self._tminus_ambient_temp_decrease = 30  # Time is takes until _zone_temp decreases when Fan and Heating are
         # off, ambient temperature drop via losses
         self._tminus_ambient_temp_increase = 20
@@ -30,21 +28,16 @@ class ZoneControl:
         self._cost_per_Kwh = 0.24  # Cost in eur per Kilowatt hour (0.24 = euro 24c)
         self._power_consumed = 0  # Power in Kwh used by each heating/cooling option set in function power_usage
 
-    ''' 
-    state:
-    1 = fan
-    2 = heatpump cooling
-    3 = heatpump heating
-    4 = biomass heating
-    5 = off
-    '''
-
     '''
     Returns the temperature value for the temp sensor class 
     '''
 
     def get_temp(self):
         return self._temp_sensor.get_outside_temp()
+
+    '''
+    Returns the current zone temperature
+    '''
 
     def get_zone_temp(self):
         return self._zone_temp
@@ -81,6 +74,13 @@ class ZoneControl:
         return self._admin_control.get_timer()
 
     '''
+    Returns the power consumed by the heating and cooling systems in the zone
+    '''
+
+    def get_power_consumed(self):
+        return self._power_consumed
+
+    '''
     Toggles the fans
     sets state to 1
     '''
@@ -96,8 +96,22 @@ class ZoneControl:
     def toggle_heater(self):
         self._state = 4
 
+    '''
+    Returns the current state of the heating/cooling system
+    1 = fan
+    2 = heatpump cooling
+    3 = heatpump heating
+    4 = biomass heating
+    5 = off
+    '''
+
     def get_state(self):
         return self._state
+
+    '''
+    Turns off any heaters or coolers
+    sets state to 5
+    '''
 
     def reset_state(self):
         self._state = 5
@@ -141,6 +155,7 @@ class ZoneControl:
     def new_temperature_physics(self):
         self._time_taken = int(time.time() - self._start_time)
         t2 = self._time_taken
+        print("t2: ", t2)
 
         if self._target_temp > self._zone_temp:
             self.toggle_heater()
@@ -169,6 +184,7 @@ class ZoneControl:
                     self._zone_temp += (3/self._tminus_temp_increase)  # Checking if _tminus_temp_increase seconds
                     # has elapsed, if so add the multiple of that time that has
                     self._start_time = time.time()  # reset start time
+                    self.power_usage()
             elif self._target_temp < self._zone_temp:
                 self.toggle_fan()
 
@@ -180,23 +196,22 @@ class ZoneControl:
                     self._zone_temp -= (3 / self._tminus_temp_decrease)  # Checking if _tminus_temp_decrease seconds
                     # has elapsed, if so minus the multiple of that time that has elapsed
                     self._start_time = time.time()  # reset start time
+                    self.power_usage()
             elif self._target_temp > self._zone_temp:
                 self.toggle_heater()
 
     def power_usage(self):
         if self.get_state() == 5:
-            self._power_consumed = 0
+            self._power_consumed += 0
 
         elif self.get_state() == 4:
-            self._power_consumed = 6
+            self._power_consumed += 6
 
         elif self.get_state() == 3:
-            self._power_consumed = 2
+            self._power_consumed += 2
 
         elif self.get_state() == 2:
-            self._power_consumed = 3
+            self._power_consumed += 3
 
         elif self.get_state() == 1:
-            self._power_consumed = 0.05
-
-
+            self._power_consumed += 0.05
