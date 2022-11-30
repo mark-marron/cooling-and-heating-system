@@ -7,11 +7,7 @@ adminPanel = AdminControl()
 root = tk.Tk()
 
 root.title('Heating and Cooling System Controller')
-root.rowconfigure(0, minsize=200, weight=1)
-root.columnconfigure(1, minsize=200, weight=1)
-answerWindow = tk.Frame(root)
-frameButtons = tk.Frame(root, relief=tk.RAISED, bd=2)
-label = tk.Label(text="Heating and Cooling System Controller", fg="black")
+root.minsize(300, 200)
 
 def get_power_usage():
     return 50
@@ -21,5 +17,14 @@ def get_money_spent():
 
 def get_money_saved():
     return 150
+
+power_usage = tk.Label(text="Power usage (Kwh): %i" % get_power_usage())
+power_usage.pack()
+
+money_spent = tk.Label(text="Money Spent (Euro): %i" % get_money_spent())
+money_spent.pack()
+
+money_saved = tk.Label(text="Money Saved (Euro): %i" % get_money_saved())
+money_saved.pack()
 
 root.mainloop()
