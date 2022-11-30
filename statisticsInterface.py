@@ -14,15 +14,15 @@ def get_power_usage():
     return zonePanel.get_power_consumed()
 
 def get_money_spent():
-    return 100
+    return get_power_usage() * zonePanel.get_cost_per_Kwh()
 
 def get_money_saved():
-    return 150
+    return 50
 
 power_usage = tk.Label(text="Power usage (Kwh): %i" % get_power_usage())
 power_usage.pack()
 
-money_spent = tk.Label(text="Money Spent (Euro): %i" % get_money_spent())
+money_spent = tk.Label(text="Money Spent (Euro): %.2f" % get_money_spent())
 money_spent.pack()
 
 money_saved = tk.Label(text="Money Saved (Euro): %i" % get_money_saved())
