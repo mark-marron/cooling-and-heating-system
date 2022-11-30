@@ -1,7 +1,6 @@
 from TempSensor import TempSensor
 from adminControlPanel import AdminControl
 from random import randint
-import asyncio
 import time
 
 
@@ -115,42 +114,6 @@ class ZoneControl:
 
     def reset_state(self):
         self._state = 5
-
-    async def temperature_physics(self):
-        if self._target_temp > self._zone_temp:
-            self.toggle_heater()
-        elif self._target_temp < self._zone_temp:
-            self.toggle_fan()
-
-        if self.get_state() == 5:  # If heating and fan are off
-            if self._zone_temp > self._temp:
-                self._zone_temp -= 1
-                await asyncio.sleep(self._tminus_ambient_temp_decrease)  # 1 deg decrease in temp via ambient losses
-            elif self._zone_temp < self._temp:
-                self._zone_temp += 1
-                await asyncio.sleep(self._tminus_ambient_temp_increase)
-            elif self._zone_temp == self._temp:
-                self._zone_temp = self._temp
-
-        elif self.get_state() == 4:  # If heating is on
-            if self._target_temp == self._zone_temp:
-                self.reset_state()  # Turn heating off
-            elif self._target_temp > self._zone_temp:
-                self._zone_temp += 1
-                await asyncio.sleep(self._tminus_temp_increase)  # 1C increase in temp takes _tminus_temp_increase sec
-            elif self._target_temp < self._zone_temp:
-                self.toggle_fan()
-                await asyncio.sleep(self._tminus_temp_decrease)  # 1C decrease in temp takes _tminus_temp_decrease sec
-
-        elif self.get_state() == 1:  # If fan is on
-            if self._target_temp == self._zone_temp:
-                self.reset_state()
-            elif self._target_temp < self._zone_temp:
-                self._zone_temp -= 1
-                await asyncio.sleep(self._tminus_temp_decrease)  # 1C decrease in temp takes _tminus_temp_increase sec
-            elif self._target_temp > self._zone_temp:
-                self.toggle_heater()
-                await asyncio.sleep(self._tminus_temp_decrease)  # 1C increase in temp takes _tminus_temp_decrease sec
 
     def new_temperature_physics(self):
         self._time_taken = int(time.time() - self._start_time)
