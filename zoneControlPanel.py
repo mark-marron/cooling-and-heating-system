@@ -80,6 +80,13 @@ class ZoneControl:
         return self._power_consumed
 
     '''
+    Returns the current cost per Kwh
+    '''
+
+    def get_cost_per_Kwh(self):
+        return self._cost_per_Kwh
+
+    '''
     Toggles the fans
     sets state to 1
     '''
