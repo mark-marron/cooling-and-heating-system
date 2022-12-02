@@ -15,6 +15,7 @@ temp = z1._temp
 currentTempint = z1.get_zone_temp()
 z1._state = 5
 tutorial_on = True
+statistics_on = True
 
 root = tk.Tk()
 
@@ -30,9 +31,16 @@ label = tk.Label(text="Heating and Cooling System Controller", fg="black")
 delay = 2
 
 start_time = threading.Timer(delay,z1.new_temperature_physics())
-
 start_time.start()
+power_used = threading.Timer(delay,z1.power_usage())
+power_used.start()
+'''
+power_used2 = threading.Timer(delay,z1.get_power_consumed())
+power_used2.start()
 
+money_spent = threading.Timer(delay,z1.get_cost_per_Kwh())
+money_spent.start()
+'''
 def set_temp_clicked():
     try:
         t = int(setTempValueInt.get())
@@ -185,6 +193,36 @@ def tutorial_clicked():
         tutorialText.config(text=result5)
         tutorial_on = True
 
+def statistics_clicked():
+    global statistics_on
+    if statistics_on==True:
+        power_usage.grid(row=2, column=1, sticky="ew", padx=5)
+        money_spent.grid(row=3, column=1, sticky="ew", padx=5)
+        money_saved.grid(row=4, column=1, sticky="ew", padx=5)
+        result7= ("Power usage (Kwh): %.2f" % get_power_usage())
+        result8= ("Money Spent (Euro): %.2f" %get_money_spent())
+        result9= ("Money Saved (Euro): %.2f" % get_money_saved())
+        power_usage.config(text=result7)
+        money_spent.config(text=result8)
+        money_saved.config(text=result9)
+        statistics_on = False
+    elif statistics_on==False:
+        power_usage.grid_remove()
+        money_spent.grid_remove()
+        money_saved.grid_remove()
+        statistics_on=True
+        
+
+
+def get_power_usage():
+    return z1.get_power_consumed()
+
+def get_money_spent():
+    return get_power_usage() * z1.get_cost_per_Kwh()
+
+def get_money_saved():
+    return 50
+
 
 getTemp = tk.Button(frameButtons, text="Get Temperature")
 getTemp.grid(row=0, column=0, sticky="ew", padx=5)
@@ -205,6 +243,10 @@ toggleCooling.configure(command=toggle_cool_click)
 tutorial = tk.Button(frameButtons, text="How to use")
 tutorial.grid(row=4, column=0, sticky="ew", padx=5)
 tutorial.configure(command=tutorial_clicked)
+
+statistics = tk.Button(frameButtons, text="Get Staistics")
+statistics.grid(row=6, column=0, sticky="ew", padx=5)
+statistics.configure(command=statistics_clicked)
 
 setTimeValueInt = IntVar()
 
@@ -230,6 +272,11 @@ selectedTime.grid(row=5, column=1, sticky="ew", padx=5, pady=15)
 
 tutorialText = tk.Label(answerWindow, text="")
 tutorialText.grid(row=4, column=0, sticky="ew", padx=5)
+
+power_usage = tk.Label(answerWindow, text="Power usage (Kwh): ")
+money_spent = tk.Label(answerWindow, text="Money Spent (Euro): ")
+money_saved = tk.Label(answerWindow, text="Money Saved (Euro): ")
+
 
 frameButtons.grid(row=0, column=0, sticky="ns")
 answerWindow.grid(row=0, column=1, sticky="nsew")

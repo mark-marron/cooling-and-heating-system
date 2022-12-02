@@ -4,17 +4,18 @@ from adminControlPanel import AdminControl
 from zoneControlPanel import ZoneControl
 from TempSensor import TempSensor
 import time as Time
+import threading
 
 running = True
 adminPanel = AdminControl()
 z1 = ZoneControl()
 zonePanels = []
 temp = TempSensor
-currentTempInt = z1.get_temp()
-currentTemp = str(currentTempInt)
-heat_on = True
-cool_on = True
+currentTempint = z1.get_zone_temp()
+currentTemp = str(currentTempint)
+z1._state=5
 tutorial_on = True
+statistics_on = True
 options = adminPanel.get_room()
 settingsDict = {}
 
@@ -23,6 +24,12 @@ root = tk.Tk()
 displays the current temperature outside to the user
 '''
 
+delay = 2
+
+start_time = threading.Timer(delay,z1.new_temperature_physics())
+start_time.start()
+power_used = threading.Timer(delay,z1.power_usage())
+power_used.start()
 
 def get_current_temp():
     current_temp_int = z1.get_temp()
@@ -47,21 +54,33 @@ also gives the user the option to set a timer once set temp is clicked '''
 def set_temp_clicked():
     try:
         t = int(setTempValueInt.get())
-        setTime = tk.Button(frameButtons, text="Set time")
-        setTime.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
-        setTime.configure(command=set_time_clicked)
-        setTimeValue = Entry(answerWindow, bg="light yellow", textvariable=setTimeValueInt)
-        setTimeValue.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
+        z1._target_temp = int(setTempValueInt.get()) 
+        set_time = tk.Button(frameButtons, text="Set time")
+        set_time.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
+        set_time.configure(command=set_time_clicked)
+        set_time_value = Entry(answerWindow, bg="light yellow", textvariable=setTimeValueInt)
+        set_time_value.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
+
         if t < 0 or t > 30:
-            result = "The temperature you have submitted (%i °C) is outside the recommended range! Please select a " \
+            result = "The temperature you have submitted (%i°C) is outside the recommended range! Please select a " \
                      "temperature between 0-30 degrees celsius" % t
             selectedTemp.config(text=result)
 
-        else:
-            tempDiff = t - int(currentTemp)
-            result = "You have set the temperature to %i °C!\n There is a %i Degree difference from the " \
-                     "current temperature" % (t, tempDiff)
-            selectedTemp.config(text=result)
+        elif (currentTempint != t) and (t >= 0 or t <= 30):
+                #z1.new_temperature_physics()
+                if z1._zone_temp > z1._target_temp:
+                    z1._state = 1
+                    z1.new_temperature_physics()
+                elif z1._zone_temp < z1._target_temp:
+                    z1._state = 4
+                    z1.new_temperature_physics()
+                elif z1._zone_temp == z1._target_temp:
+                    z1._state = 5
+                temp_diff = z1._target_temp - currentTempint
+                result = "You have set the temperature to %i °C!\n There is a %i Degree difference from the " \
+                     "current temperature" % (z1._target_temp, temp_diff)
+                
+                selectedTemp.config(text=result)
     except ValueError as error:
         selectedTemp.config(title='Error', message=error)
 
@@ -91,9 +110,32 @@ displays the current temperature outside to the user
 
 
 def get_temp_clicked():
-    curTemp = currentTemp
-    result2 = "Current Temperature is : %s°C" % curTemp
+    z1.new_temperature_physics()
+    result2 = "Current Temperature is : %i °C" % z1.get_zone_temp()
     getTempValue.config(text=result2)
+    temp_diff = z1._target_temp - int(z1.get_zone_temp())
+    result = "You have set the temperature to %i °C!\n There is a %i Degree difference from the " \
+                  "current temperature" % (z1._target_temp, temp_diff)
+                
+    selectedTemp.config(text=result)
+    if z1._state == 4:
+        result3 = "Heating : ON"
+        result4 = "Cooling : OFF"
+        heatingToggle.config(text=result3)
+        coolingToggle.config(text=result4)
+        z1._state = 4 
+    elif z1._state == 1:
+        result4 = "Cooling : ON"
+        result3 = "Heating : OFF"
+        coolingToggle.config(text=result4)
+        heatingToggle.config(text=result3)
+        z1._state = 1
+    elif z1._state == 5:
+        result3 = "Heating : OFF"
+        heatingToggle.config(text=result3)
+        result4 = "Cooling : OFF"
+        coolingToggle.config(text=result4)
+        z1._state = 5
 
 
 '''
@@ -102,19 +144,20 @@ toggles the heating on and makes sure the cooling toggle cannot be on the same t
 
 
 def toggle_heat_click():
-    global heat_on
-    global cool_on
-    if heat_on:
+    if z1._state == 4:
+        z1._state = 5
+    elif z1._state != 4:
+        z1._state = 4
+    if z1._state==4:
         result3 = "Heating : ON"
-        result4 = "Cooling  : OFF"
+        result4 = "Cooling : OFF"
         heatingToggle.config(text=result3)
         coolingToggle.config(text=result4)
-        heat_on = False
-        cool_on = True
+        z1._state = 4 
     else:
         result3 = "Heating : OFF"
         heatingToggle.config(text=result3)
-        heat_on = True
+        z1._state = 5
 
 
 '''
@@ -123,19 +166,20 @@ toggles the cooling on and makes sure the cooling cant be on the same time as th
 
 
 def toggle_cool_click():
-    global cool_on
-    global heat_on
-    if cool_on:
+    if z1._state == 1:
+        z1._state = 5
+    elif z1._state != 1:
+        z1._state = 1
+    if z1._state==1:
         result4 = "Cooling : ON"
         result3 = "Heating : OFF"
         coolingToggle.config(text=result4)
         heatingToggle.config(text=result3)
-        cool_on = False
-        heat_on = True
+        z1._state = 1
     else:
         result4 = "Cooling : OFF"
         coolingToggle.config(text=result4)
-        cool_on = True
+        z1._state = 5
 
 
 '''
@@ -161,6 +205,36 @@ def tutorial_clicked():
         result5 = ""
         tutorialText.config(text=result5)
         tutorial_on = True
+
+def statistics_clicked():
+    global statistics_on
+    if statistics_on==True:
+        power_usage.grid(row=2, column=1, sticky="ew", padx=5)
+        money_spent.grid(row=3, column=1, sticky="ew", padx=5)
+        money_saved.grid(row=4, column=1, sticky="ew", padx=5)
+        result7= ("Power usage (Kwh): %.2f" % get_power_usage())
+        result8= ("Money Spent (Euro): %.2f" %get_money_spent())
+        result9= ("Money Saved (Euro): %.2f" % get_money_saved())
+        power_usage.config(text=result7)
+        money_spent.config(text=result8)
+        money_saved.config(text=result9)
+        statistics_on = False
+    elif statistics_on==False:
+        power_usage.grid_remove()
+        money_spent.grid_remove()
+        money_saved.grid_remove()
+        statistics_on=True
+        
+
+
+def get_power_usage():
+    return z1.get_power_consumed()
+
+def get_money_spent():
+    return get_power_usage() * z1.get_cost_per_Kwh()
+
+def get_money_saved():
+    return 50
 
 def set_room():
     result = "Room selected : %s" %(clicked.get())
@@ -208,6 +282,10 @@ tutorial = tk.Button(frameButtons, text="How to use")
 tutorial.grid(row=6, column=0, sticky="ew", padx=5, pady=5)
 tutorial.configure(command=tutorial_clicked)
 
+statistics = tk.Button(frameButtons, text="Get Staistics")
+statistics.grid(row=6, column=0, sticky="ew", padx=5)
+statistics.configure(command=statistics_clicked)
+
 setSettings = tk.Button(frameButtons, text="Save Settings")
 setSettings.grid(row=7, column=0,sticky="ew", padx=5,pady=5)
 setSettings.configure(command=set_settings)
@@ -242,5 +320,10 @@ setRoom.grid(row=8, column=0, sticky="ew", padx=5, pady=5)
 
 frameButtons.grid(row=0, column=0, sticky="ns")
 answerWindow.grid(row=0, column=1, sticky="nsew")
+
+power_usage = tk.Label(answerWindow, text="Power usage (Kwh): ")
+money_spent = tk.Label(answerWindow, text="Money Spent (Euro): ")
+money_saved = tk.Label(answerWindow, text="Money Saved (Euro): ")
+
 
 root.mainloop()
