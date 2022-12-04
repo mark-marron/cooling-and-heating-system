@@ -206,6 +206,10 @@ def tutorial_clicked():
         tutorialText.config(text=result5)
         tutorial_on = True
 
+'''
+Displays statistics regarding amount of power used, money spent and how much money saved based on the current state of the system
+This is done by taking the heating and cooling into account and for how long they were on/off
+'''
 def statistics_clicked():
     global statistics_on
     if statistics_on==True:
@@ -226,25 +230,45 @@ def statistics_clicked():
         statistics_on=True
         
 
-
+'''
+Returns the power usage amount for the statistics
+'''
 def get_power_usage():
     return z1.get_power_consumed()
 
+'''
+Returns the money spent amount for the statistics
+This is done by getting the power usage amount and multiplying it by the cost per hour variable
+'''
 def get_money_spent():
     return get_power_usage() * z1.get_cost_per_Kwh()
 
+'''
+Returns the money saved amount for the statistics
+'''
 def get_money_saved():
     return 50
 
+'''
+Sets the room out of the options listed in the admin control panel
+The reason it is a pre defined list is because I believe in real scenarios the list of rooms would be hard coded into a systems control panel
+'''
 def set_room():
-    result = "Room selected : %s" %(clicked.get())
+    room = clicked.get()
+    result = "Room selected : %s" %(room)
     setRoom.config(text=result)
 
+'''
+Displays the current settings set for a room select by the user
+'''
 def get_settings():
     result = "Set Temperature in %s is %s°C" %(clicked.get(), settingsDict[clicked.get()])
     selectedTemp.config(text=result)
 
 
+'''
+Saves the current settings for a room selected by a user
+'''
 def set_settings():
     room = clicked.get()
     settingsDict[room] = setTempValueInt.get()
@@ -253,6 +277,7 @@ def set_settings():
     getSettings.configure(command=get_settings)
 
 clicked = StringVar()
+clicked.set(options[0]) #default value is first room
 setRoom = OptionMenu(answerWindow, clicked, *options)
 setRoom.grid(row=0, column=0, sticky="ew", padx=5)
 
