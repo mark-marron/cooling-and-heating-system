@@ -193,6 +193,11 @@ def tutorial_clicked():
         tutorialText.config(text=result5)
         tutorial_on = True
 
+
+'''
+Displays statistics regarding amount of power used, money spent and how much money saved based on the current state of the system
+This is done by taking the heating and cooling into account and for how long they were on/off
+'''
 def statistics_clicked():
     global statistics_on
     if statistics_on==True:
@@ -213,13 +218,22 @@ def statistics_clicked():
         statistics_on=True
         
 
-
+'''
+Returns the power usage amount for the statistics
+'''
 def get_power_usage():
     return z1.get_power_consumed()
 
+'''
+Returns the money spent amount for the statistics
+This is done by getting the power usage amount and multiplying it by the cost per hour variable
+'''
 def get_money_spent():
     return get_power_usage() * z1.get_cost_per_Kwh()
 
+'''
+Returns the money saved amount for the statistics
+'''
 def get_money_saved():
     return 50
 
