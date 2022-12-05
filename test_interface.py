@@ -67,7 +67,7 @@ class TestsetTimeInterfaceValid(unittest.TestCase):
 adminPanel = AdminControl()
 z1 = ZoneControl()
 zonePanels = []
-temp = z1._temp
+temp = z1.get_temp()
 currentTempint = z1.get_zone_temp()
 z1._state = 5
 
@@ -104,7 +104,7 @@ def toggle_heat_click(toggle):
         z1._state = 4
     else:
         z1._state = 5
-    return z1._state
+    return z1.get_state()
 
 
 '''
@@ -125,7 +125,7 @@ def toggle_cool_click(toggle):
         z1._state = 1
     else:
         z1._state = 5
-    return z1._state
+    return z1.get_state()
 
 
 '''

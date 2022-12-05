@@ -10,7 +10,7 @@ running = True
 adminPanel = AdminControl()
 z1 = ZoneControl()
 zonePanels = []
-temp = z1._temp
+temp = z1.get_temp()
 currentTempint = z1.get_zone_temp()
 z1._state = 5
 tutorial_on = True
@@ -62,32 +62,32 @@ def set_temp_clicked():
             start_time.start()
             power_used = threading.Timer(delay, z1.power_usage())
             power_used.start()
-            if z1._zone_temp > z1._target_temp:
+            if z1.get_zone_temp() > z1.get_zone_temp():
                 z1._state = 1
                 z1.new_temperature_physics()
-            elif z1._zone_temp < z1._target_temp:
+            elif z1.get_zone_temp() < z1.get_zone_temp():
                 z1._state = 4
                 z1.new_temperature_physics()
-            elif z1._zone_temp == z1._target_temp:
+            elif z1.get_zone_temp() == z1.get_zone_temp():
                 z1._state = 5
-            temp_diff = z1._target_temp - currentTempint
+            temp_diff = z1.get_target_temp() - currentTempint
             result = "You have set the temperature to %i °C!\n There is a %i Degree difference from the " \
-                     "current temperature" % (z1._target_temp, temp_diff)
+                     "current temperature" % (z1.get_target_temp(), temp_diff)
 
             selectedTemp.config(text=result)
-            if z1._state == 4:
+            if z1.get_state() == 4:
                 result3 = "Heating : ON"
                 result4 = "Cooling : OFF"
                 heatingToggle.config(text=result3)
                 coolingToggle.config(text=result4)
                 z1._state = 4
-            elif z1._state == 1:
+            elif z1.get_state() == 1:
                 result4 = "Cooling : ON"
                 result3 = "Heating : OFF"
                 coolingToggle.config(text=result4)
                 heatingToggle.config(text=result3)
                 z1._state = 1
-            elif z1._state == 5:
+            elif z1.get_state() == 5:
                 result3 = "Heating : OFF"
                 heatingToggle.config(text=result3)
                 result4 = "Cooling : OFF"
@@ -141,11 +141,11 @@ toggles the heating on and makes sure the cooling toggle cannot be on the same t
 
 
 def toggle_heat_click():
-    if z1._state == 4:
+    if z1.get_state() == 4:
         z1._state = 5
-    elif z1._state != 4:
+    elif z1.get_state() != 4:
         z1._state = 4
-    if z1._state == 4:
+    if z1.get_state() == 4:
         result3 = "Heating : ON"
         result4 = "Cooling : OFF"
         heatingToggle.config(text=result3)
@@ -167,11 +167,11 @@ while z1._zone_temp > z1._target_temp:
 
 
 def toggle_cool_click():
-    if z1._state == 1:
+    if z1.get_state() == 1:
         z1._state = 5
-    elif z1._state != 1:
+    elif z1.get_state() != 1:
         z1._state = 1
-    if z1._state == 1:
+    if z1.get_state() == 1:
         result4 = "Cooling : ON"
         result3 = "Heating : OFF"
         coolingToggle.config(text=result4)
@@ -191,7 +191,7 @@ displays a text box to the user on how to use the interface to change the temper
 def tutorial_clicked():
     global tutorial_on
     if tutorial_on:
-        result5 = "By clicking 'Get Temperature' the current temperature reading is displayed.\n\nBy entering a value " \
+        result5 = "By clicking 'Get Temperature' the current temperature reading is displayed.\n\nBy entering a value "\
                   "into the box next to 'Set Temperature' and then clicking the button this allows you to select a " \
                   "specific temperature you would like the room to reach\n\nBy clicking 'Toggle Heating' the Biomass " \
                   "Heating is turned on\n\nBy clicking 'Toggle Cooling' the Cooling Fans are turned on\n\n You can " \
@@ -279,7 +279,7 @@ tutorial = tk.Button(frameButtons, text="How to use")
 tutorial.grid(row=4, column=0, sticky="ew", padx=5)
 tutorial.configure(command=tutorial_clicked)
 
-statistics = tk.Button(frameButtons, text="Get Staistics")
+statistics = tk.Button(frameButtons, text="Get Statistics")
 statistics.grid(row=6, column=0, sticky="ew", padx=5)
 statistics.configure(command=statistics_clicked)
 

@@ -96,7 +96,7 @@ class TestGetSettingsAdminInterfaceInvalid(unittest.TestCase):
         self.assertAlmostEqual(get_settings(), 'Nothing was set')
 
 
-# PARTITION 13 if th euser loads settings after saving a number of settings the it is valid
+# PARTITION 13 if the user loads settings after saving a number of settings the it is valid
 class TestGetSettingsAdminInterfaceValid(unittest.TestCase):
     def test_get_settings_clicked(self):
         set_settings('bedroom1', 17)
@@ -169,7 +169,7 @@ def toggle_heat_click(toggle):
         result3 = "Heating : OFF"
         heat_on = True
         z1._state = 5
-    return z1._state
+    return z1.get_state()
 
 
 '''
@@ -190,7 +190,7 @@ def toggle_cool_click(toggle):
         result4 = "Cooling : OFF"
         cool_on = True
         z1._state = 5
-    return z1._state
+    return z1.get_state()
 
 
 def set_room(room):
