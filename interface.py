@@ -16,6 +16,7 @@ currentTempint = z1.get_zone_temp()
 z1._state = 5
 tutorial_on = True
 statistics_on = True
+setTempClicked = False
 
 root = tk.Tk()
 
@@ -58,6 +59,8 @@ def set_temp_clicked():
 
         elif (currentTempint != t) and (t >= 0 or t <= 30):
                 #z1.new_temperature_physics()
+                global setTempClicked
+                setTempClicked = True
                 if z1._zone_temp > z1._target_temp:
                     z1._state = 1
                     z1.new_temperature_physics()
@@ -71,6 +74,24 @@ def set_temp_clicked():
                      "current temperature" % (z1._target_temp, temp_diff)
                 
                 selectedTemp.config(text=result)
+                if z1._state == 4:
+                    result3 = "Heating : ON"
+                    result4 = "Cooling : OFF"
+                    heatingToggle.config(text=result3)
+                    coolingToggle.config(text=result4)
+                    z1._state = 4 
+                elif z1._state == 1:
+                    result4 = "Cooling : ON"
+                    result3 = "Heating : OFF"
+                    coolingToggle.config(text=result4)
+                    heatingToggle.config(text=result3)
+                    z1._state = 1
+                elif z1._state == 5:
+                    result3 = "Heating : OFF"
+                    heatingToggle.config(text=result3)
+                    result4 = "Cooling : OFF"
+                    coolingToggle.config(text=result4)
+                    z1._state = 5
     except ValueError as error:
         selectedTemp.config(title='Error', message=error)
 
@@ -100,33 +121,13 @@ displays the current temperature outside to the user
 
 
 def get_temp_clicked():
-    z1.new_temperature_physics()
-    result2 = "Current Temperature is : %i °C" % z1.get_zone_temp()
+    if setTempClicked == True:
+        result2 = "Current Temperature is : %i °C" % z1.get_zone_temp()
+        z1.new_temperature_physics()
+    else:
+        result2 = "Current Temperature is : %i °C" % int(TempSensor.get_outside_temp(TempSensor))
     getTempValue.config(text=result2)
-    temp_diff = z1._target_temp - int(z1.get_zone_temp())
-    result = "You have set the temperature to %i °C!\n There is a %i Degree difference from the " \
-                  "current temperature" % (z1._target_temp, temp_diff)
-                
-    selectedTemp.config(text=result)
-    if z1._state == 4:
-        result3 = "Heating : ON"
-        result4 = "Cooling : OFF"
-        heatingToggle.config(text=result3)
-        coolingToggle.config(text=result4)
-        z1._state = 4 
-    elif z1._state == 1:
-        result4 = "Cooling : ON"
-        result3 = "Heating : OFF"
-        coolingToggle.config(text=result4)
-        heatingToggle.config(text=result3)
-        z1._state = 1
-    elif z1._state == 5:
-        result3 = "Heating : OFF"
-        heatingToggle.config(text=result3)
-        result4 = "Cooling : OFF"
-        coolingToggle.config(text=result4)
-        z1._state = 5
-
+    
 
 
 '''
