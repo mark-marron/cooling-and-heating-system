@@ -194,7 +194,7 @@ def toggle_cool_click(toggle):
 
 
 def set_room(room):
-    result = "Room selected : %s" % (room)
+    result = "Room selected : %s" % room
     for i in options:
         if room == i:
             return room
@@ -228,7 +228,7 @@ def set_settings(roomParam, temp):
 
 
 def get_settings():
-    if called == True:
+    if called:
         return 'Settings'
     else:
         return 'Nothing was set'

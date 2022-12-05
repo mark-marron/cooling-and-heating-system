@@ -136,7 +136,7 @@ displays the current temperature outside to the user
 
 
 def get_temp_clicked():
-    if setTempClicked == True:
+    if setTempClicked:
         result2 = "Current Temperature is : %i °C" % z1.get_zone_temp()
         z1.new_temperature_physics()
     else:
@@ -216,15 +216,13 @@ def tutorial_clicked():
         tutorial_on = True
 
 
-'''
-Displays statistics regarding amount of power used, money spent and how much money saved based on the current state of the system
-This is done by taking the heating and cooling into account and for how long they were on/off
-'''
+'''Displays statistics regarding amount of power used, money spent and how much money saved based on the current 
+state of the system This is done by taking the heating and cooling into account and for how long they were on/off '''
 
 
 def statistics_clicked():
     global statistics_on
-    if statistics_on == True:
+    if statistics_on:
         power_usage.grid(row=2, column=1, sticky="ew", padx=5)
         money_spent.grid(row=3, column=1, sticky="ew", padx=5)
         money_saved.grid(row=4, column=1, sticky="ew", padx=5)
@@ -235,7 +233,7 @@ def statistics_clicked():
         money_spent.config(text=result8)
         money_saved.config(text=result9)
         statistics_on = False
-    elif statistics_on == False:
+    elif not statistics_on:
         power_usage.grid_remove()
         money_spent.grid_remove()
         money_saved.grid_remove()
@@ -279,7 +277,7 @@ a systems control panel
 
 def set_room():
     room = clicked.get()
-    result = "Room selected : %s" % (room)
+    result = "Room selected : %s" % room
     setRoom.config(text=result)
 
 
