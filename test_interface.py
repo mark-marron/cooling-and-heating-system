@@ -76,7 +76,7 @@ delay = 2
 
 def set_temp_clicked(temp):
     t = temp
-    if t >= 0 and t <= 30:
+    if 0 <= t <= 30:
         t = t
         return t
 

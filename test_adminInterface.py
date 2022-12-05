@@ -220,7 +220,7 @@ def set_settings(roomParam, temp):
     if t > 30:
         t = 30
         return room, int(t)
-    if t >= 0 and t <= 30:
+    if 0 <= t <= 30:
         return room, int(t)
     else:
         t = currentTempInt
