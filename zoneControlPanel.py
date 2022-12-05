@@ -25,6 +25,7 @@ class ZoneControl:
         self._start_time = 0
         self._time_taken = 0
         self._cost_per_Kwh = 0.24  # Cost in eur per Kilowatt hour (0.24 = euro 24c)
+        self._cost_per_Kwh_Raditors = 0.26 # Cost in eur per Kilowatt hour if the heating source was a radiator as opposed to heat pump/ biomass heating (0.26 = euro 26c)
         self._power_consumed = 0  # Power in Kwh used by each heating/cooling option set in function power_usage
 
     '''
@@ -85,6 +86,14 @@ class ZoneControl:
 
     def get_cost_per_Kwh(self):
         return self._cost_per_Kwh
+
+    '''
+    Returns the current cost per Kwh of a radiator
+    '''
+
+    def get_cost_per_Kwh_Radiator(self):
+        return self._cost_per_Kwh_Raditors
+
 
     '''
     Toggles the fans
