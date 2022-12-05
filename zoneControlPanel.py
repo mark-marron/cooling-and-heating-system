@@ -22,10 +22,11 @@ class ZoneControl:
         self._tminus_ambient_temp_increase = 20
         self._tminus_temp_decrease = 5  # Time takes until _zone_temp decreases by 1 Degree
         self._tminus_temp_increase = 5   # Time takes until _zone_temp increases by 1 Degree
-        self._start_time = 0
-        self._time_taken = 0
+        self._start_time = 0  # initialising var for start time, called at the start of function to measure duration
+        self._time_taken = 0  # initialising var for measuring duration (current time - start time)
         self._cost_per_Kwh = 0.24  # Cost in eur per Kilowatt hour (0.24 = euro 24c)
-        self._cost_per_Kwh_Raditors = 0.26 # Cost in eur per Kilowatt hour if the heating source was a radiator as opposed to heat pump/ biomass heating (0.26 = euro 26c)
+        self._cost_per_Kwh_Raditors = 0.26  # Cost in eur per Kilowatt hour if the heating source was a radiator as
+        # opposed to heat pump/ biomass heating (0.26 = euro 26c)
         self._power_consumed = 0  # Power in Kwh used by each heating/cooling option set in function power_usage
 
     '''
@@ -94,7 +95,6 @@ class ZoneControl:
     def get_cost_per_Kwh_Radiator(self):
         return self._cost_per_Kwh_Raditors
 
-
     '''
     Toggles the fans
     sets state to 1
@@ -130,6 +130,16 @@ class ZoneControl:
 
     def reset_state(self):
         self._state = 5
+
+        '''
+        Function to simulate temperature increases/decreases in place of a physical sensor inputting values.
+        Values are declared in __init__, these values are self-explanatory.
+        The Function first checks if self.start_time hasn't been declared yet by calling set_target_temp and if so sets
+        it = to the current time at start of calling the function.
+        Next it checks if the current temperature is above or below the target temperature and toggles the fan or heater
+        Finally it checks the state and increased or decreases temperature by dividing time_taken by the var declared as
+        the amount of time it takes to increase/decrease temperature in a certain state.
+        '''
 
     def new_temperature_physics(self):
         if self._start_time == 0:
@@ -180,6 +190,10 @@ class ZoneControl:
                     self.power_usage()
             elif self._target_temp > self._zone_temp:
                 self.toggle_heater()
+
+    '''
+    power_usage function sets _power_consumed variable depending on state
+    '''
 
     def power_usage(self):
         if self.get_state() == 5:
