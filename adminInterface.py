@@ -247,13 +247,13 @@ Returns the money spent amount for the statistics
 This is done by getting the power usage amount and multiplying it by the cost per hour variable
 '''
 def get_money_spent():
-    return get_power_usage() * z1.get_cost_per_Kwh()
+    return get_power_usage() * z1.get_cost_per_kwh()
 
 '''
 Returns the money saved amount for the statistics
 '''
 def get_money_saved():
-    return (get_power_usage()*z1.get_cost_per_Kwh_Radiator()) - (get_power_usage() * z1.get_cost_per_Kwh())
+    return (get_power_usage() * z1.get_cost_per_kwh_radiator()) - (get_power_usage() * z1.get_cost_per_kwh())
 
 '''
 Sets the room out of the options listed in the admin control panel

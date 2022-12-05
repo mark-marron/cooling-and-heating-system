@@ -14,7 +14,7 @@ def get_power_usage():
     return zonePanel.get_power_consumed()
 
 def get_money_spent():
-    return get_power_usage() * zonePanel.get_cost_per_Kwh()
+    return get_power_usage() * zonePanel.get_cost_per_kwh()
 
 def get_money_saved():
     return 50

@@ -24,8 +24,8 @@ class ZoneControl:
         self._tminus_temp_increase = 5   # Time takes until _zone_temp increases by 1 Degree
         self._start_time = 0  # initialising var for start time, called at the start of function to measure duration
         self._time_taken = 0  # initialising var for measuring duration (current time - start time)
-        self._cost_per_Kwh = 0.24  # Cost in eur per Kilowatt hour (0.24 = euro 24c)
-        self._cost_per_Kwh_Raditors = 0.26  # Cost in eur per Kilowatt hour if the heating source was a radiator as
+        self._cost_per_kwh = 0.24  # Cost in eur per Kilowatt hour (0.24 = euro 24c)
+        self._cost_per_kwh_radiators = 0.26  # Cost in eur per Kilowatt hour if the heating source was a radiator as
         # opposed to heat pump/ biomass heating (0.26 = euro 26c)
         self._power_consumed = 0  # Power in Kwh used by each heating/cooling option set in function power_usage
 
@@ -85,15 +85,15 @@ class ZoneControl:
     Returns the current cost per Kwh
     '''
 
-    def get_cost_per_Kwh(self):
-        return self._cost_per_Kwh
+    def get_cost_per_kwh(self):
+        return self._cost_per_kwh
 
     '''
     Returns the current cost per Kwh of a radiator
     '''
 
-    def get_cost_per_Kwh_Radiator(self):
-        return self._cost_per_Kwh_Raditors
+    def get_cost_per_kwh_radiator(self):
+        return self._cost_per_kwh_radiators
 
     '''
     Toggles the fans
