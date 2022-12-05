@@ -31,10 +31,7 @@ label = tk.Label(text="Heating and Cooling System Controller", fg="black")
 
 delay = 2
 
-start_time = threading.Timer(delay,z1.new_temperature_physics())
-start_time.start()
-power_used = threading.Timer(delay,z1.power_usage())
-power_used.start()
+
 '''
 power_used2 = threading.Timer(delay,z1.get_power_consumed())
 power_used2.start()
@@ -61,6 +58,10 @@ def set_temp_clicked():
                 #z1.new_temperature_physics()
                 global setTempClicked
                 setTempClicked = True
+                start_time = threading.Timer(delay,z1.new_temperature_physics())
+                start_time.start()
+                power_used = threading.Timer(delay,z1.power_usage())
+                power_used.start()  
                 if z1._zone_temp > z1._target_temp:
                     z1._state = 1
                     z1.new_temperature_physics()
@@ -109,11 +110,14 @@ def set_time_clicked():
             result = "time : %i" % time
         else:
             result = "time is up!"
+            result3 = "Heating : OFF"
+            result4 = "Cooling : OFF"
+            heatingToggle.config(text=result3)
+            coolingToggle.config(text=result4)
         selectedTime.config(text=result)
         answerWindow.update()
         Time.sleep(1)
         time = time - 1
-
 
 '''
 displays the current temperature outside to the user
