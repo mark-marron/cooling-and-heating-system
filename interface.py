@@ -114,6 +114,7 @@ def set_time_clicked():
             result4 = "Cooling : OFF"
             heatingToggle.config(text=result3)
             coolingToggle.config(text=result4)
+            z1._state = 5
         selectedTime.config(text=result)
         answerWindow.update()
         Time.sleep(1)
