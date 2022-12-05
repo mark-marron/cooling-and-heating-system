@@ -27,10 +27,7 @@ displays the current temperature outside to the user
 
 delay = 2
 
-start_time = threading.Timer(delay,z1.new_temperature_physics())
-start_time.start()
-power_used = threading.Timer(delay,z1.power_usage())
-power_used.start()
+
 
 def get_current_temp():
     current_temp_int = z1.get_temp()
@@ -71,6 +68,10 @@ def set_temp_clicked():
                 #z1.new_temperature_physics()
                 global setTempClicked
                 setTempClicked = True
+                start_time = threading.Timer(delay,z1.new_temperature_physics())
+                start_time.start()
+                power_used = threading.Timer(delay,z1.power_usage())
+                power_used.start()
                 if z1._zone_temp > z1._target_temp:
                     z1._state = 1
                     z1.new_temperature_physics()
@@ -119,6 +120,10 @@ def set_time_clicked():
             result = "time : %i" % time
         else:
             result = "time is up!"
+            result3 = "Heating : OFF"
+            result4 = "Cooling : OFF"
+            heatingToggle.config(text=result3)
+            coolingToggle.config(text=result4)
         selectedTime.config(text=result)
         answerWindow.update()
         Time.sleep(1)
@@ -273,7 +278,7 @@ def set_settings():
     room = clicked.get()
     settingsDict[room] = setTempValueInt.get()
     getSettings = tk.Button(frameButtons, text="Load Settings")
-    getSettings.grid(row=8,column=0, sticky="ew",padx=5,pady=5)
+    getSettings.grid(row=9,column=0, sticky="ew",padx=5,pady=5)
     getSettings.configure(command=get_settings)
 
 clicked = StringVar()
@@ -308,11 +313,11 @@ tutorial.grid(row=6, column=0, sticky="ew", padx=5, pady=5)
 tutorial.configure(command=tutorial_clicked)
 
 statistics = tk.Button(frameButtons, text="Get Staistics")
-statistics.grid(row=6, column=0, sticky="ew", padx=5)
+statistics.grid(row=7, column=0, sticky="ew", padx=5)
 statistics.configure(command=statistics_clicked)
 
 setSettings = tk.Button(frameButtons, text="Save Settings")
-setSettings.grid(row=7, column=0,sticky="ew", padx=5,pady=5)
+setSettings.grid(row=8, column=0,sticky="ew", padx=5,pady=5)
 setSettings.configure(command=set_settings)
 
 setTimeValueInt = IntVar()
