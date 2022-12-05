@@ -236,7 +236,7 @@ def get_money_spent():
 Returns the money saved amount for the statistics
 '''
 def get_money_saved():
-    return 50
+    return (get_power_usage()*z1.get_cost_per_Kwh_Radiator()) - (get_power_usage() * z1.get_cost_per_Kwh())
 
 
 getTemp = tk.Button(frameButtons, text="Get Temperature")
